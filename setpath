@@ -1,0 +1,21 @@
+# .setpath
+# vim:sts=4 sw=4 et
+# Set the $PATH environment variable on Debian or Ubuntu Linux systems
+# To be sourced from .profile or .bash_profile
+
+isroot=
+[ -w / ] && isroot=yes
+
+PATH=\
+$HOME/bin:\
+$HOME/.local/bin:\
+$HOME/ABO/bin:\
+${isroot:+/usr/local/sbin:}\
+/usr/local/bin:\
+${isroot:+/sbin:}\
+${isroot:+/usr/sbin:}\
+/bin:\
+/usr/bin:\
+/usr/bin/mh
+
+unset isroot
