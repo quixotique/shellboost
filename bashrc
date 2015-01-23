@@ -65,7 +65,7 @@ alias vidiff=gvimdiff
 # User command to view/set current profile.
 p() {
     case $# in
-    0) cat "$HOME/etc/profile" 2>/dev/null; return 0;;
+    0) cat "$HOME/etc/devprofile" 2>/dev/null; return 0;;
     esac
     case $(builtin type -t __undo_profile) in
     function)
@@ -74,13 +74,13 @@ p() {
         ;;
     esac
     mkdir -p $HOME/etc
-    echo "$1" >|$HOME/etc/profile
-    . $HOME/.profile
+    echo "$1" >|$HOME/etc/devprofile
+    . $HOME/.bash_profile
 }
 
-# Invoked by .profile
+# Invoked by .bash_profile
 _init_devprofile() {
-    export PROFILE=$(cat $HOME/etc/profile 2>/dev/null || true)
+    export PROFILE=$(cat $HOME/etc/devprofile 2>/dev/null || true)
     test -n "$PROFILE" -a -r "$HOME/$PROFILE/.profile" && . "$HOME/$PROFILE/.profile"
 }
 

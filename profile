@@ -42,13 +42,3 @@ unset CVS_RSH
 # Vim settings
 unset VIMRC_SWITCH
 unset CSCOPE_DB
-
-# Source current development profile, if there is one.
-unset -f type
-case $(type _init_devprofile) in
-'_init_devprofile is a function'* | \
-'_init_devprofile is a shell function' \
-)
-    _init_devprofile
-    ;;
-esac

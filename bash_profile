@@ -5,6 +5,13 @@
 test -r $HOME/.bashrc && source $HOME/.bashrc
 test -r $HOME/.profile && source $HOME/.profile
 
+# Source current development profile, if there is one.
+case $(builtin type -t _init_devprofile) in
+function)
+    _init_devprofile
+    ;;
+esac
+
 # User specific environment and startup programs
 
 unset USERNAME
