@@ -28,3 +28,33 @@ abspath() {
    *) echo "$PWD/$1";;
    esac
 }
+
+path_trimsep() {
+    case "$1" in
+    /) echo /;;
+    */) path_trimsep "${1%/}";;
+    *) echo "$1";;
+    esac
+}
+
+path_addsep() {
+    case "$1" in
+    /) echo /;;
+    */) path_addsep "${1%/}";;
+    *) echo "$1/";;
+    esac
+}
+
+relpath() {
+   local path="$(abspath "$1")"
+   local base="$(path_addsep "$(abspath "${2:-.}")")"
+   local down=
+   local up=
+   while [ -n "$base" ]; do
+      down="${path#"$base"}"
+      [ "$down" != "$path" ] && break
+      base="$(path_addsep "${base%/*/}")"
+      up="../$up"
+   done
+   echo "${up}$down"
+}
