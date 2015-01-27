@@ -2,6 +2,14 @@
 # vim:sts=4 sw=4 et
 # Bash shell per-invocation initialisation
 
+# Work out where shellboost is installed, adapts to any installation path.
+export SHELLBOOST="$(realpath "${BASH_SOURCE[0]}")" 2>/dev/null
+case "$SHELLBOOST" in
+*/bash_profile) SHELLBOOST="${SHELLBOOST%/bash_profile}";;
+*) unset SHELLBOOST;;
+esac
+
+# Source initialisation scripts.
 test -r $HOME/.bashrc && source $HOME/.bashrc
 test -r $HOME/.profile && source $HOME/.profile
 

@@ -2,11 +2,12 @@
 # vim:sts=4 sw=4 et
 # Bourne shell (not just Bash!) login initialisation
 
-# Set PATH if we can.
-[ -r $HOME/.setpath ] && . $HOME/.setpath
+# Test if shellboost is installed in some well-known places, if we don't
+# already know.
+[ ! -d "$SHELLBOOST" -a -d "$HOME/etc/shellboost" ] && SHELLBOOST="$HOME/etc/shellboost"
 
-# GNOME window manager.
-#export WINDOW_MANAGER=/usr/bin/openbox
+# Set $PATH.
+[ -r $HOME/.setpath ] && . $HOME/.setpath
 
 # Suppress the following WARNING **: Couldn't register with accessibility bus:
 # Did not receive a reply. Possible causes include: the remote application did
@@ -42,3 +43,7 @@ unset CVS_RSH
 # Vim settings
 unset VIMRC_SWITCH
 unset CSCOPE_DB
+
+# GNOME window manager.
+#export WINDOW_MANAGER=/usr/bin/openbox
+
