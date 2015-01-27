@@ -18,7 +18,8 @@ export NO_AT_BRIDGE=1
 # General application settings.
 #export HEADROOM_HOME=$HOME/headroom
 export BYCB_HOME=$HOME/Vault/Australia/BYCB
-export EDITOR=$HOME/bin/mygvim
+export EDITOR=/usr/bin/vim
+[ -x "$SHELLBOOST/bin/gvim-nofork" ] && export EDITOR="$SHELLBOOST/bin/gvim-nofork" 
 export PAGER=/usr/bin/less
 export CDPATH=.:$HOME
 export GROFF_TMAC_PATH=$HOME/lib:$BYCB_HOME/tmac:/usr/lib/groff/tmac
