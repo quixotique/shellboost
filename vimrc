@@ -93,6 +93,37 @@ function s:closeCurrentTab()
   endif
 endf
 
+" Searching commands
+" Set grepprg to get better behaviour
+set grepprg=grep\ -Hn\ $*\ /dev/null
+command -nargs=1 Grep call g:Grep(<q-args>)
+command -nargs=1 Grepword call g:Grepword(<q-args>)
+nmap <Leader>== *:lgrep '\<<cword>\>'<CR>:lopen<CR>:lrewind<CR>n
+nmap <Leader>=+ :tab split<CR>*:lgrep '\<<cword>\>'<CR>:lopen<CR>:lrewind<CR>n
+nmap ]= :lnext<CR>
+nmap [= :lprevious<CR>
+nmap <Leader>=] :lnext<CR>
+nmap <Leader>=[ :lprevious<CR>
+nmap <Leader>=} :lnfile<CR>
+nmap <Leader>={ :lpfile<CR>
+nmap <Leader>=_ :ll<CR>
+nmap <Leader>=^ :lrewind<CR>
+nmap <Leader>=$ :llast<CR>
+nmap <Leader>=o :lopen<CR>
+nmap <Leader>=c :lclose<CR>
+
+function g:Grep(text)
+  exe 'lgrep' shellescape(a:text)
+  lopen
+  lrewind
+endfunc
+
+function g:Grepword(text)
+  exe 'lgrep' shellescape('\<'.a:text.'\>')
+  lopen
+  lrewind
+endfunc
+
 " Set up cscope the way we use it
 if has("cscope") && $CSCOPE_DB != ""
   cscope add $CSCOPE_DB
