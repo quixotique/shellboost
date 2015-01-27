@@ -15,9 +15,9 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-# path_contains NAME [ value1 [ value2 ... ] ]
+# searchpath_contains NAME [ value1 [ value2 ... ] ]
 # Returns true if any of value1 or value2 etc. are in $NAME
-path_contains() {
+searchpath_contains() {
    local __var __path __arg __element __IFS
    __var="$1"
    shift
@@ -36,50 +36,50 @@ path_contains() {
    return 1
 }
 
-# path_append NAME [ value1 [ value2 ... ] ]
+# searchpath_append NAME [ value1 [ value2 ... ] ]
 # Appends value1, value2 etc. to $NAME if not already somewhere in $NAME
-path_append() {
+searchpath_append() {
    local __var __arg
    __var="$1"
    shift
    for __arg; do
-      path_contains $__var "$__arg" || eval $__var=\"\$$__var\${$__var:+:}\$__arg\"
+      searchpath_contains $__var "$__arg" || eval $__var=\"\$$__var\${$__var:+:}\$__arg\"
    done
 }
 
-# path_append_force NAME [ value1 [ value2 ... ] ]
+# searchpath_append_force NAME [ value1 [ value2 ... ] ]
 # Appends value1, value2 etc. to $NAME after removing value1, value2 etc.
 # from anywhere else in $NAME
-path_append_force() {
-   path_remove "$@"
-   path_append "$@"
+searchpath_append_force() {
+   searchpath_remove "$@"
+   searchpath_append "$@"
 }
 
-# path_prepend NAME [ value1 [ value2 ... ] ]
+# searchpath_prepend NAME [ value1 [ value2 ... ] ]
 # Prepends value1, value2 etc. to $NAME if not already somewhere in $NAME
-path_prepend() {
+searchpath_prepend() {
    local __var __i __arg
    __var="$1"
    shift
    __i=$#
    while [ $__i -gt 0 ]; do
       eval __arg=\"\$$__i\"
-      path_contains $__var "$__arg" || eval $__var=\"\$__arg\${$__var:+:}\$$__var\"
+      searchpath_contains $__var "$__arg" || eval $__var=\"\$__arg\${$__var:+:}\$$__var\"
       __i=$((__i - 1))
    done
 }
 
-# path_prepend_force NAME [ value1 [ value2 ... ] ]
+# searchpath_prepend_force NAME [ value1 [ value2 ... ] ]
 # Prepends value1, value2 etc. to $NAME after removing value1, value2 etc.
 # from anywhere else in $NAME
-path_prepend_force() {
-   path_remove "$@"
-   path_prepend "$@"
+searchpath_prepend_force() {
+   searchpath_remove "$@"
+   searchpath_prepend "$@"
 }
 
-# path_remove NAME [ value1 [ value2 ... ] ]
+# searchpath_remove NAME [ value1 [ value2 ... ] ]
 # Removes value1, value2 etc. from $NAME
-path_remove() {
+searchpath_remove() {
    local __var __path __newpath __arg __element __IFS
    __var="$1"
    shift
