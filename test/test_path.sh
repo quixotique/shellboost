@@ -1,6 +1,6 @@
 case $0 in */*)D="${0%/*}";;*)D=.;;esac
-. $D/../path.sh
-. $D/../assert.sh
+. $D/../libsh/path.sh
+. $D/../libsh/assert.sh
 
 assert [ $(path_trimsep /a/b) = /a/b ]
 assert [ $(path_trimsep /a/b/c/) = /a/b/c ]

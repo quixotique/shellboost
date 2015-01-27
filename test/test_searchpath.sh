@@ -1,6 +1,6 @@
 case $0 in */*)D="${0%/*}";;*)D=.;;esac
-. $D/../searchpath.sh
-. $D/../assert.sh
+. $D/../libsh/searchpath.sh
+. $D/../libsh/assert.sh
 
 X=a:b:c
 assert searchpath_contains X a
