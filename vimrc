@@ -203,6 +203,17 @@ inoremap <buffer> <silent> <End>  <C-o>g<End>
 " Show incomplete lines
 setlocal display+=lastline
 
+" C++ development support
+" Some C++ header files have no .h or .H extension
+fun! DetectCpp()
+  if getline(1) =~ '-*-c++-*-'
+    set filetype=cpp
+  endif
+endfun
+augroup filetype
+  au BufRead * 			call DetectCpp()
+augroup END
+
 " If the VIMRC_SWITCH env var is set, then use that vimrc file instead
 if exists('$VIMRC_SWITCH') && filereadable($VIMRC_SWITCH)
   source $VIMRC_SWITCH
@@ -220,17 +231,9 @@ set modelines=5
 
 " Various file type preferences
 
-fun! DetectCpp()
-  if getline(1) =~ '-*-c++-*-'
-    set filetype=cpp
-  endif
-endfun
-
 augroup filetype
   " Quixote PTL
   au BufRead *.ptl		set ft=python
-  " C++ header files (with no .h or .H extension)
-  au BufRead * 			call DetectCpp()
 augroup END
 
 "setlocal spell spelllang=en_au
