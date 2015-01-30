@@ -177,6 +177,10 @@ set softtabstop=4
 set shiftwidth=4
 set expandtab
 
+" Stop the netrw.vim plugin writing a .netrwhist file into plugin directories that
+" pathogen adds to 'runtimepath'
+let g:netrw_home = expand('~/.vim')
+
 " Load all plugins managed by Pathogen
 exe pathogen#infect()
 
