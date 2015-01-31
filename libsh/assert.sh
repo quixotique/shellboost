@@ -12,7 +12,7 @@ __run() {
 
 assert() {
    if ! __run "$@"; then
-      echo "assertion failed: $*" >&2
+      printf '%s\n' "assertion failed: $*" >&2
       exit 3
    fi
 }

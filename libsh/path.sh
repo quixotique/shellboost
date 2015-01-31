@@ -18,7 +18,7 @@
 
 dirpath() {
    case "$1" in
-   */*) echo "${1%/*}";;
+   */*) printf '%s\n' "${1%/*}";;
    *) echo .;;
    esac
 }
@@ -35,7 +35,7 @@ path_trimsep() {
     case "$1" in
     /) echo /;;
     */) path_trimsep "${1%/}";;
-    *) echo "$1";;
+    *) printf '%s\n' "$1";;
     esac
 }
 
@@ -43,7 +43,7 @@ path_addsep() {
     case "$1" in
     /) echo /;;
     */) path_addsep "${1%/}";;
-    *) echo "$1/";;
+    *) printf '%s\n' "$1/";;
     esac
 }
 
@@ -53,15 +53,15 @@ path_simplify() {
    //*) path_simplify "${1#/}";;
    /.) echo /;;
    /..) echo /;;
-   *?/) echo "$(path_addsep "$(path_simplify "$(path_trimsep "${1%/}")")")";;
+   *?/) printf '%s\n' "$(path_addsep "$(path_simplify "$(path_trimsep "${1%/}")")")";;
    *?/.) path_simplify "${1%/.}";;
    *?/..)
       p="$(path_simplify "${1%/..}")"
       case "$p" in
       .) echo "..";;
       ..) echo "../..";;
-      *?/..) echo "$p/..";;
-      *?/*) echo "${p%/*}";;
+      *?/..) printf '%s\n' "$p/..";;
+      *?/*) printf '%s\n' "${p%/*}";;
       /) echo /;;
       /..) echo /;;
       /*) echo /;;
@@ -71,13 +71,13 @@ path_simplify() {
    *?/*?)
       p="$(path_simplify "${1%/*}")"
       case "$p" in
-      .) echo "${1##*/}";;
-      *) echo "$(path_addsep "$p")${1##*/}";;
+      .) printf '%s\n' "${1##*/}";;
+      *) printf '%s\n' "$(path_addsep "$p")${1##*/}";;
       esac
       ;;
    .) echo .;;
    ..) echo ..;;
-   *) echo "$1";;
+   *) printf '%s\n' "$1";;
    esac
 }
 
@@ -94,5 +94,5 @@ relpath() {
       base="${base%/*/}/"
       up="..${up:+/}$up"
    done
-   echo "${up}${up:+${down:+/}}$down"
+   printf '%s\n' "${up}${up:+${down:+/}}$down"
 }
