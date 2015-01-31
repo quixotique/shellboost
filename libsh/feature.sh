@@ -19,3 +19,8 @@
 __have_arrays() {
    ( eval '__array_test=(a b c) && [ ${__array_test[1]} = b ]' 2>/dev/null )
 }
+
+# Test if we have Bash full substitution variable expansion
+__have_var_full_subst() {
+   ( a=12345 eval '[ "${a//[135]/x}" = x2x4x ]' 2>/dev/null )
+}
