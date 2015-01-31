@@ -55,3 +55,39 @@ quoted() {
    echo
 }
 
+# Strip characters from start of argument.  If no chars given, default is whitespace.
+# lstrip arg [chars]
+lstrip() {
+   local text chars ntext
+   text="$1"
+   chars="${2:- 	
+}"
+   while true; do
+      ntext="${text#["$chars"]}"
+      [ "$ntext" = "$text" ] && break
+      text="$ntext"
+   done
+   printf '%s\n' "$ntext"
+}
+
+# Strip characters from end of argument.  If no chars given, default is whitespace.
+# rstrip arg [chars]
+rstrip() {
+   local text chars ntext
+   text="$1"
+   chars="${2:- 	
+}"
+   while true; do
+      ntext="${text%["$chars"]}"
+      [ "$ntext" = "$text" ] && break
+      text="$ntext"
+   done
+   printf '%s\n' "$ntext"
+}
+
+# Strip characters from start and end of argument.  If no chars given, default
+# is whitespace.
+# strip arg [chars]
+strip() {
+   rstrip "$(lstrip "$1" "$2")" "$2"
+}
