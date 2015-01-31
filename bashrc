@@ -81,7 +81,13 @@ p() {
 # Invoked by .bash_profile
 _init_devprofile() {
     export PROFILE=$(cat $HOME/etc/devprofile 2>/dev/null || true)
-    test -n "$PROFILE" -a -r "$HOME/$PROFILE/.profile" && . "$HOME/$PROFILE/.profile"
+    if [ -n "$PROFILE" ]; then
+        if [ -r "$HOME/$PROFILE/.bash_profile" ]; then
+           . "$HOME/$PROFILE/.bash_profile"
+        elif [ -r "$HOME/$PROFILE/.profile" ]; then
+           . "$HOME/$PROFILE/.profile"
+        fi
+    fi
 }
 
 # For argument completion.
