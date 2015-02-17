@@ -81,6 +81,76 @@ path_simplify() {
    esac
 }
 
+path_component() {
+   local path n IFS
+   path="${1?}"
+   n="${2?}"
+   n=$((n+1)) || return 1
+   IFS=/
+   set -- $path
+   while [ $n -gt 0 ]; do
+      while [ $# -gt 0 -a -z "$1" ]; do
+         shift
+      done
+      [ $# -eq 0 ] && return 1
+      [ $n -eq 1 ] && break
+      shift
+      n=$((n-1))
+   done
+   echo "$1"
+}
+
+path_component_separator() {
+   local path n comp IFS
+   path="${1?}"
+   n="${2?}"
+   n=$((n+1)) || return 1
+   IFS=/
+   set -- $path
+   if [ $# -gt 0 -a -z "$1" ]; then
+      if [ $n -eq 1 ]; then
+         echo /
+         return 0
+      fi
+      n=$((n-1))
+      while [ $# -gt 0 -a -z "$1" ]; do
+         shift
+      done
+   fi
+   while [ $n -gt 0 ]; do
+      [ $# -eq 0 ] && return 1
+      comp="$1"
+      [ $n -eq 1 ] && break
+      n=$((n-1))
+      shift
+      [ $# -eq 0 ] && [ "${path%/}" = "$path" ] && return 1
+      comp="/"
+      [ $n -eq 1 ] && break
+      n=$((n-1))
+      while [ $# -gt 0 -a -z "$1" ]; do
+         shift
+      done
+   done
+   [ -n "$comp" ] && echo "$comp"
+}
+
+path_common_prefix() {
+   local path prefix newprefix n pathcomp prefixcomp IFS
+   IFS=/
+   prefix="${1?}"
+   shift
+   for path; do
+      newprefix=
+      n=0
+      while pathcomp="$(path_component_separator "$path" $n)" && prefixcomp="$(path_component_separator "$prefix" $n)" && [ "$pathcomp" = "$prefixcomp" ]; do
+         newprefix="$newprefix$prefixcomp"
+         n=$((n+1))
+      done
+      prefix="$newprefix"
+   done
+   echo "$prefix"
+}
+
 relpath() {
    local path="$(path_simplify "$(abspath "$1")")"
    local base="$(path_addsep "$(path_simplify "$(abspath "${2-.}")")")"
