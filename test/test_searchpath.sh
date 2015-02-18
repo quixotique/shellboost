@@ -9,6 +9,10 @@ assert searchpath_contains X c
 assert searchpath_contains X x y a z
 assert ! searchpath_contains X d
 
+unset X
+searchpath_append X a
+assert [ $X = a ]
+
 X=a:b:c
 searchpath_append X d
 assert [ $X = a:b:c:d ]
