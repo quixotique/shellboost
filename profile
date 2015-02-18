@@ -21,7 +21,6 @@ export BYCB_HOME=$HOME/Vault/Australia/BYCB
 export EDITOR=/usr/bin/vim
 [ -x "$SHELLBOOST/bin/gvim-nofork" ] && export EDITOR="$SHELLBOOST/bin/gvim-nofork" 
 export PAGER=/usr/bin/less
-export CDPATH=.:$HOME
 export GROFF_TMAC_PATH=$HOME/lib:$BYCB_HOME/tmac:/usr/lib/groff/tmac
 export MM_CHARSET=utf-8
 export LESS=-R
