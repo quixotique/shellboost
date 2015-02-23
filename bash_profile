@@ -2,12 +2,15 @@
 # vim:sts=4 sw=4 et
 # Bash shell per-invocation initialisation
 
-# Work out where shellboost is installed, adapts to any installation path.
-export SHELLBOOST="$(realpath "${BASH_SOURCE[0]}")" 2>/dev/null
-case "$SHELLBOOST" in
-*/bash_profile) SHELLBOOST="${SHELLBOOST%/bash_profile}";;
-*) unset SHELLBOOST;;
-esac
+# Work out where shellboost is installed, adapts to any installation path, and bootstrap
+# shellboost's include system
+export SHELLBOOST="$(cd -P "${BASH_SOURCE[0]%/*}" >/dev/null 2>/dev/null || cd -P . >/dev/null; echo "$PWD")" 2>/dev/null
+if [ -f "$SHELLBOOST/libsh/include.sh" ]; then
+    source "$SHELLBOOST/libsh/include.sh"
+else
+    unset SHELLBOOST
+    __shellboost_include() { echo "Failure: __shellboost_include $1" >&2; return 1; }
+fi
 
 # Source initialisation scripts.
 test -r $HOME/.bashrc && source $HOME/.bashrc

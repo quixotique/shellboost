@@ -4,7 +4,10 @@
 
 # Test if shellboost is installed in some well-known places, if we don't
 # already know.
-[ ! -d "$SHELLBOOST" -a -d "$HOME/etc/shellboost" ] && SHELLBOOST="$HOME/etc/shellboost"
+if [ ! -d "$SHELLBOOST" -a -f "$HOME/etc/shellboost/libsh/include.sh" ]; then
+   SHELLBOOST="$HOME/etc/shellboost"
+   . "$SHELLBOOST/libsh/include.sh"
+fi
 
 # Set $PATH.
 [ -r $HOME/.setpath ] && . $HOME/.setpath
