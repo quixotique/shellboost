@@ -47,6 +47,8 @@ unset CVS_RSH
 unset VIMRC_SWITCH
 unset CSCOPE_DB
 
+__shellboost_include libsh/vim.sh
+
 # GNOME window manager.
 #export WINDOW_MANAGER=/usr/bin/openbox
 
