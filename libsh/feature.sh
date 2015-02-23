@@ -24,3 +24,11 @@ __have_arrays() {
 __have_var_full_subst() {
    ( a=12345 eval '[ "${a//[135]/x}" = x2x4x ]' 2>/dev/null )
 }
+
+# Test if we have Bash command-line completion
+__have_completion() {
+    case $(type complete) in
+    'complete is a shell builtin') return 0;;
+    esac
+    return 1
+}
