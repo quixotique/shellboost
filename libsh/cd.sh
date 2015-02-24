@@ -26,10 +26,27 @@ __run() {
 }
 
 cd_up_until() {
+   local dir
+   dir="$PWD"
    while true; do
       __run "$@" && return 0
       [ "$PWD" = / ] && break
-      cd .. >/dev/null || return $?
+      cd .. >/dev/null || break
    done
+   cd "$dir" >/dev/null
+   return 1
+}
+
+cd_down_until() {
+   if [ "$PWD" = / ]; then
+      __run "$@" && return 0
+   else
+      local dir
+      dir="${PWD##*/}"
+      cd .. >/dev/null
+      cd_down_until "$@" && return 0
+      __run "$@" && return 0
+      cd "$dir" >/dev/null
+   fi
    return 1
 }
