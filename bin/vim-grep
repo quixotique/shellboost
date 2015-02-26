@@ -1,0 +1,6 @@
+#!/bin/sh
+exec grep -R \
+    --exclude-dir=.hg --exclude-dir=.git --exclude-dir=.svn \
+    --exclude-dir=CMakeFiles \
+    --exclude=tags --exclude='*.o' --exclude '*.a' --exclude '*.so' --exclude '*.so.*' \
+    "$@"

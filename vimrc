@@ -95,11 +95,11 @@ endf
 
 " Searching commands
 " Set grepprg to get better behaviour
-set grepprg=grep\ -Hn\ $*\ /dev/null
+set grepprg=vim-grep\ -Hn\ $*
 command -nargs=1 Grep call g:Grep(<q-args>)
 command -nargs=1 Grepword call g:Grepword(<q-args>)
-nmap <Leader>== *:lgrep '\<<cword>\>'<CR>:lopen<CR>:lrewind<CR>n
-nmap <Leader>=+ :tab split<CR>*:lgrep '\<<cword>\>'<CR>:lopen<CR>:lrewind<CR>n
+nmap <Leader>== *:lgrep '-w' '<cword>'<CR>:lopen<CR>:lrewind<CR>n
+nmap <Leader>=+ :tab split<CR>*:lgrep '-w' '<cword>'<CR>:lopen<CR>:lrewind<CR>n
 nmap ]= :lnext<CR>
 nmap [= :lprevious<CR>
 nmap <Leader>=] :lnext<CR>
@@ -119,7 +119,7 @@ function g:Grep(text)
 endfunc
 
 function g:Grepword(text)
-  exe 'lgrep' shellescape('\<'.a:text.'\>')
+  exe 'lgrep' '-w' shellescape(a:text)
   lopen
   lrewind
 endfunc
