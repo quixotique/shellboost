@@ -210,7 +210,7 @@ setlocal display+=lastline
 " C++ development support
 " Some C++ header files have no .h or .H extension
 fun! DetectCpp()
-  if getline(1) =~ '-*-c++-*-'
+  if getline(1) =~ '-\*- *[Cc]++ *-\*-'
     set filetype=cpp
   endif
 endfun
