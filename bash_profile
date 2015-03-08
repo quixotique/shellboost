@@ -2,9 +2,10 @@
 # vim:sts=4 sw=4 et
 # Bash shell per-invocation initialisation
 
-# Work out where shellboost is installed, adapts to any installation path, and bootstrap
-# shellboost's include system
-export SHELLBOOST="$(cd -P "${BASH_SOURCE[0]%/*}" >/dev/null 2>/dev/null || cd -P . >/dev/null; echo "$PWD")" 2>/dev/null
+# Work out where shellboost is installed and bootstrap shellboost's include
+# system.  If readlink(1) is not installed, this will fail and fall back to
+# the logic in .profile
+export SHELLBOOST="$(readlink -q -e "${BASH_SOURCE[0]}" 2>/dev/null)" 2>/dev/null
 if [ -f "$SHELLBOOST/libsh/include.sh" ]; then
     source "$SHELLBOOST/libsh/include.sh"
 else

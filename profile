@@ -4,8 +4,8 @@
 
 # Test if shellboost is installed in some well-known places, if we don't
 # already know.
-if [ ! -d "$SHELLBOOST" -a -f "$HOME/etc/shellboost/libsh/include.sh" ]; then
-   SHELLBOOST="$HOME/etc/shellboost"
+if [ ! -f "$SHELLBOOST/etc/shellboost/libsh/include.sh" -a -f "$HOME/etc/shellboost/libsh/include.sh" ]; then
+   export SHELLBOOST="$HOME/etc/shellboost"
    . "$SHELLBOOST/libsh/include.sh"
 fi
 

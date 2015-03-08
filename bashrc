@@ -2,6 +2,14 @@
 # vim:sts=4 sw=4 et
 # Bash shell per-invocation initialisation
 
+# Test if shellboost is installed in some well-known places, if we don't
+# already know.
+
+if [ ! -f "$SHELLBOOST/etc/shellboost/libsh/include.sh" -a -f "$HOME/etc/shellboost/libsh/include.sh" ]; then
+   export SHELLBOOST="$HOME/etc/shellboost"
+   . "$SHELLBOOST/libsh/include.sh"
+fi
+
 # Source global definitions
 
 if [ -f /etc/bash.bashrc ]; then
@@ -60,7 +68,7 @@ alias grep='grep --color=auto'
 alias vi=gvim
 alias vidiff=gvimdiff
 
-# Development profile.
+# Development profile (only in Bash).
 
 # User command to view/set current profile.
 p() {
