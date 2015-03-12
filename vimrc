@@ -31,11 +31,6 @@ if filereadable('/etc/vim/vimrc')
   source /etc/vim/vimrc
 endif
 
-" Use the Serval Vim plugins if present
-if $SERVAL_TOOLS != ""
-  set runtimepath=~/.vim,$SERVAL_TOOLS/vim,$VIMRUNTIME,$SERVAL_TOOLS/vim/after,~/.vim/after
-endif
-
 " Various user interface preferences
 
 set nocompatible        " No Vi compatibility
@@ -183,6 +178,9 @@ let g:netrw_home = expand('~/.vim')
 
 " Load all plugins managed by Pathogen
 exe pathogen#infect()
+
+" Git/Mercurial diff plugin
+set runtimepath^=~/src/vim-delta
 
 " Enable syntax highlighting (recommended by Pathogen)
 if has("syntax")
