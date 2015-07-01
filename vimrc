@@ -235,7 +235,7 @@ set modelines=5
 
 augroup filetype
   " Quixote PTL
-  au BufRead *.ptl		set ft=python
+  au BufRead *.ptl		set filetype=python
 augroup END
 
 "setlocal spell spelllang=en_au
