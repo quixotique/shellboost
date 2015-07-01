@@ -27,6 +27,7 @@ esac
 # User specific environment and startup programs
 
 unset USERNAME
+export HISTSIZE=1000000 # keep a lot of history
 
 # ABO settings
 # TODO These should be placed in the ABO repository and sourced from here
