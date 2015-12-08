@@ -120,7 +120,7 @@ function g:Grepword(text)
 endfunc
 
 " Set up cscope the way we use it
-if has("cscope") && $CSCOPE_DB != ""
+if has("cscope") && executable("cscope") && $CSCOPE_DB != ""
   cscope add $CSCOPE_DB
   set cscopeverbose  	" Show message when any other cscope db added
   set cscoperelative	" Cscope.out filenames are relative to cscope.out
