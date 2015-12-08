@@ -47,6 +47,9 @@ unset CVS_RSH
 unset VIMRC_SWITCH
 unset CSCOPE_DB
 
+# Mercurial settings
+unset HGRC_SWITCH
+
 __shellboost_include libsh/vim.sh
 
 # GNOME window manager.

@@ -30,7 +30,7 @@ unset USERNAME
 export HISTSIZE=1000000 # keep a lot of history
 
 # ABO settings
-# TODO These should be placed in the ABO repository and sourced from here
+# TODO The following should be placed in the ABO repository and sourced from here
 
 # Prevent Bash from always breaking completion words on ':' so that
 # account names containing ':' can be completed like usual
