@@ -22,7 +22,7 @@ export NO_AT_BRIDGE=1
 #export HEADROOM_HOME=$HOME/headroom
 export BYCB_HOME=$HOME/Vault/Australia/BYCB
 export EDITOR=/usr/bin/vim
-[ -x "$SHELLBOOST/bin/gvim-nofork" ] && export EDITOR="$SHELLBOOST/bin/gvim-nofork" 
+[ -x "$SHELLBOOST/bin/gvim-nofork" ] && export EDITOR="$SHELLBOOST/bin/gvim-nofork"
 export PAGER=/usr/bin/less
 export GROFF_TMAC_PATH=$HOME/lib:$BYCB_HOME/tmac:/usr/lib/groff/tmac
 export MM_CHARSET=utf-8
@@ -47,11 +47,10 @@ unset CVSROOT
 # Vim settings
 unset VIMRC_SWITCH
 unset CSCOPE_DB
+__shellboost_include libsh/vim.sh
 
 # Mercurial settings
 unset HGRC_SWITCH
-
-__shellboost_include libsh/vim.sh
 
 # GNOME window manager.
 #export WINDOW_MANAGER=/usr/bin/openbox
