@@ -73,28 +73,37 @@ alias vidiff=gvimdiff
 # User command to view/set current profile.
 p() {
     case $# in
-    0) cat "$HOME/etc/devprofile" 2>/dev/null; return 0;;
+    0) ( cd -P "$HOME/etc/devprofile" >/dev/null 2>/dev/null && echo "${PWD##*/}" ); return 0;;
     esac
-    case $(builtin type -t __undo_profile) in
-    function)
-        __undo_profile
-        unset -f __undo_profile
-        ;;
-    esac
-    mkdir -p $HOME/etc
-    echo "$1" >|$HOME/etc/devprofile
-    . $HOME/.bash_profile
+    if [ "$1" = - -o -r "$HOME/$1/.bash_profile" -o -r "$HOME/$1/.profile" ]; then
+        case $(builtin type -t __undo_profile) in
+        function)
+            __undo_profile
+            unset -f __undo_profile
+            ;;
+        esac
+        case "$1" in
+        -)
+            rm -rf "$HOME/etc/devprofile"
+            . "$HOME/.bash_profile"
+            ;;
+        *)
+            mkdir -p $HOME/etc
+            ( cd "$HOME/etc" && ln --symbolic --force -T "../$1" devprofile ) && . "$HOME/.bash_profile"
+            ;;
+        esac
+    else
+        echo "Not a profile directory: $1" >&2
+        return 1
+    fi
 }
 
 # Invoked by .bash_profile
 _init_devprofile() {
-    export PROFILE=$(cat $HOME/etc/devprofile 2>/dev/null || true)
-    if [ -n "$PROFILE" ]; then
-        if [ -r "$HOME/$PROFILE/.bash_profile" ]; then
-           . "$HOME/$PROFILE/.bash_profile"
-        elif [ -r "$HOME/$PROFILE/.profile" ]; then
-           . "$HOME/$PROFILE/.profile"
-        fi
+    if [ -r "$HOME/etc/devprofile/.bash_profile" ]; then
+        . "$HOME/etc/devprofile/.bash_profile"
+    elif [ -r "$HOME/etc/devprofile/.profile" ]; then
+        . "$HOME/etc/devprofile/.profile"
     fi
 }
 
@@ -104,8 +113,8 @@ _complete_devprofiles() {
     shopt -q nullglob && __had_nullglob=true
     shopt -s nullglob
     local __prof
-    for __prof in $HOME/$2*/.profile; do
-        __prof=${__prof%/.profile}
+    for __prof in "$HOME/$2"*/.bash_profile "$HOME/$2"*/.profile ; do
+        __prof=${__prof%/.*profile}
         __prof=${__prof##*/}
         COMPREPLY+=("$__prof")
     done
