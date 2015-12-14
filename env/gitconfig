@@ -1,0 +1,25 @@
+[core]
+excludesfile = ~/.gitexclude
+
+[user]
+name = Andrew Bettison
+email = andrew@iverin.com.au
+
+[alias]
+s = status --short
+st = status --short
+co = checkout
+up = merge --ff-only
+
+[merge]
+defaultToUpstream = true
+
+[push]
+default = simple
+
+[gui]
+fontui = -family \"DejaVu Sans\" -size 10 -weight normal -slant roman -underline 0 -overstrike 0
+fontdiff = -family \"DejaVu Sans Mono\" -size 10 -weight normal -slant roman -underline 0 -overstrike 0
+
+[include]
+path = ~/etc/devprofile/.gitconfig
