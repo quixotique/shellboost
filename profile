@@ -42,6 +42,7 @@ export LS_OPTIONS='--color=auto'
 [ -x /usr/bin/dircolours ] && eval "$(/usr/bin/dircolors)"
 
 unset CVS_RSH
+unset CVSROOT
 
 # Vim settings
 unset VIMRC_SWITCH
