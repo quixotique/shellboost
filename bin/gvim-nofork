@@ -1,2 +1,14 @@
 #!/bin/sh
-exec gvim --nofork "$@"
+
+case $(type -t gvim) in
+file)
+    exec gvim --nofork "$@"
+    ;;
+esac
+case $(type -t vim) in
+file)
+    exec vim "$@"
+    ;;
+esac
+echo "not found: gvim or vim" >&2
+exit 1

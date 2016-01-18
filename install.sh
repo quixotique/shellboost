@@ -37,7 +37,7 @@ install() {
     [ -e "$src" ]
     if $opt_force || [ ! -e "$dst" ]; then
         echo "link $dst  ->  $src"
-        ln --symbolic --force "$src" "$dst"
+        ln -s -f "$src" "$dst"
     fi
 }
 
