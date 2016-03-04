@@ -96,3 +96,25 @@ searchpath_remove() {
    IFS="$__IFS"
    eval $__var=\"\$__newpath\"
 }
+
+# searchpath_remove_prefixed NAME [ prefix1 [ prefix2 ... ] ]
+# Removes all elements starting with prefix1 or prefix2 etc. from $NAME
+searchpath_remove_prefixed() {
+   local __var __path __newpath __arg __element __IFS
+   __var="$1"
+   shift
+   eval __path=\"\$$__var\"
+   __newpath=
+   __IFS="$IFS"
+   IFS=:
+   for __element in $__path; do
+      for __arg; do
+         case "$__element" in
+         "$__arg"* ) continue 2;;
+         esac
+      done
+      __newpath="$__newpath${__newpath:+:}$__element"
+   done
+   IFS="$__IFS"
+   eval $__var=\"\$__newpath\"
+}

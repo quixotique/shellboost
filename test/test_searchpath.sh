@@ -61,6 +61,22 @@ X=a:b:c
 searchpath_prepend_force X b e f c d
 assert [ $X = b:e:f:c:d:a ]
 
-X=a:b:c:d
+X=a:b:a:d:c
 searchpath_remove X a c
 assert [ $X = b:d ]
+
+X=abc:abd:b1:aef:aeg:ak:b2
+searchpath_remove_prefixed X a
+assert [ $X = b1:b2 ]
+
+X=abc:abd:b1:aef:aeg:ak:b2
+searchpath_remove_prefixed X ab
+assert [ $X = b1:aef:aeg:ak:b2 ]
+
+X=abc:abd:b1:aef:aeg:ak:b2
+searchpath_remove_prefixed X ab ae
+assert [ $X = b1:ak:b2 ]
+
+X=abc:abd:b1:aef:aeg:ak:b2
+searchpath_remove_prefixed X a b
+assert [ "$X" = '' ]
