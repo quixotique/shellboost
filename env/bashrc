@@ -1,6 +1,7 @@
 # .bashrc
 # vim:sts=4 sw=4 et
 # Bash shell per-invocation initialisation
+# Copyright 2015-2016 Andrew Bettison
 
 # Test if shellboost is installed in some well-known places, if we don't
 # already know.

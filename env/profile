@@ -1,6 +1,7 @@
 # .profile
 # vim:sts=4 sw=4 et
 # Bourne shell (not just Bash!) login initialisation
+# Copyright 2015-2016 Andrew Bettison
 
 # Test if shellboost is installed in some well-known places, if we don't
 # already know.

@@ -1,6 +1,7 @@
 # .bash_profile
 # vim:sts=4 sw=4 et
-# Bash shell per-invocation initialisation
+# Bash shell per-login initialisation
+# Copyright 2015-2016 Andrew Bettison
 
 # Work out where shellboost is installed and bootstrap shellboost's include
 # system.  If readlink(1) is not installed, this will fail and fall back to
