@@ -31,15 +31,4 @@ unset USERNAME
 export HISTSIZE=1000000 # keep a lot of history
 
 # ABO settings
-# TODO The following should be placed in the ABO repository and sourced from here
-
-# Prevent Bash from always breaking completion words on ':' so that
-# account names containing ':' can be completed like usual
-COMP_WORDBREAKS=${COMP_WORDBREAKS//:}
-
-# Prevent Bash from always breaking completion words on '=' so that --select
-# arguments starting with '=' can be completed as a list of tags.
-COMP_WORDBREAKS=${COMP_WORDBREAKS//=}
-
-complete -C 'abo compa' acc stmt
-complete -o nospace -C 'pyabo compa' pyabo
+[ -r "$ABO_HOME/env/bash_profile" ] && source "$ABO_HOME/env/bash_profile"

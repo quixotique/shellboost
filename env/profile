@@ -30,16 +30,12 @@ esac
 export NO_AT_BRIDGE=1
 
 # General application settings.
-#export HEADROOM_HOME=$HOME/headroom
-export BYCB_HOME=$HOME/Vault/Australia/BYCB
 export EDITOR=/usr/bin/vim
 [ -x "$SHELLBOOST/bin/gvim-nofork" ] && export EDITOR="$SHELLBOOST/bin/gvim-nofork"
 export PAGER=/usr/bin/less
-export GROFF_TMAC_PATH=$HOME/lib:$BYCB_HOME/tmac:/usr/lib/groff/tmac
 export MM_CHARSET=utf-8
 export LESS=-R
 export LESSCHARSET=utf-8
-export PERL5LIB=$HOME/lib/perl5
 export TMPDIR=/tmp
 export DEBFULLNAME='Andrew Bettison'
 export DEBEMAIL='andrew@iverin.com.au'
@@ -61,6 +57,7 @@ esac
 
 unset CVS_RSH
 unset CVSROOT
+unset GROFF_TMAC_PATH
 
 # Vim settings
 unset VIMRC_SWITCH
@@ -73,3 +70,14 @@ unset HGRC_SWITCH
 # GNOME window manager.
 #export WINDOW_MANAGER=/usr/bin/openbox
 
+#export HEADROOM_HOME="$HOME/headroom"
+
+# ABO - accounting and administrative software package.
+export ABO_HOME="$HOME/ABO"
+[ -r "$ABO_HOME/env/profile" ] && . "$ABO_HOME/env/profile"
+
+# Burnside Youth Concert Band.
+__shellboost_include libsh/searchpath.sh
+export BYCB_HOME=$HOME/Vault/Australia/BYCB
+searchpath_prepend GROFF_TMAC_PATH "$BYCB_HOME/tmac"
+export GROFF_TMAC_PATH
