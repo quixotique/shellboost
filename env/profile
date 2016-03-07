@@ -3,12 +3,22 @@
 # Bourne shell (not just Bash!) login initialisation
 # Copyright 2015-2016 Andrew Bettison
 
-# Test if shellboost is installed in some well-known places, if we don't
-# already know.
-if [ ! -f "$SHELLBOOST/etc/shellboost/libsh/include.sh" -a -f "$HOME/etc/shellboost/libsh/include.sh" ]; then
-   export SHELLBOOST="$HOME/etc/shellboost"
-   . "$SHELLBOOST/libsh/include.sh"
-fi
+# If shellboost is not already initialised, then check if it is installed in
+# some well-known places, and initialise it.
+case $(type __shellboost_include) in
+*'shell function')
+    ;;
+*)
+    if [ ! -f "$SHELLBOOST/etc/shellboost/libsh/include.sh" -a -f "$HOME/etc/shellboost/libsh/include.sh" ]; then
+        export SHELLBOOST="$HOME/etc/shellboost"
+    fi
+    if [ -r "$SHELLBOOST/libsh/include.sh" ]; then
+        . "$SHELLBOOST/libsh/include.sh"
+    else
+        __shellboost_include() { echo "Failure: __shellboost_include $1" >&2; return 1; }
+    fi
+    ;;
+esac
 
 # Set $PATH.
 [ -r "$HOME/.setpath" ] && . "$HOME/.setpath"
