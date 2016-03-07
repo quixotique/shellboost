@@ -11,7 +11,7 @@ if [ ! -f "$SHELLBOOST/etc/shellboost/libsh/include.sh" -a -f "$HOME/etc/shellbo
 fi
 
 # Set $PATH.
-[ -r $HOME/.setpath ] && . $HOME/.setpath
+[ -r "$HOME/.setpath" ] && . "$HOME/.setpath"
 
 # Suppress the following WARNING **: Couldn't register with accessibility bus:
 # Did not receive a reply. Possible causes include: the remote application did

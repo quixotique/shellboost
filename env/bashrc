@@ -19,9 +19,9 @@ fi
 
 # If our PATH has been clobbered (probably by su), correct it if we can.
 
-case $PATH in
-*:$HOME/bin:* | $HOME/bin:* | *:$HOME/bin) ;;
-*) [ -f $HOME/.setpath ] && source $HOME/.setpath;;
+case "$PATH" in
+*:"$HOME/bin":* | "$HOME/bin":* | *:"$HOME/bin") ;;
+*) [ -f "$HOME/.setpath" ] && source "$HOME/.setpath";;
 esac
 
 # Prompts.
@@ -96,7 +96,7 @@ p() {
             . "$HOME/.bash_profile"
             ;;
         *)
-            mkdir -p $HOME/etc
+            mkdir -p "$HOME/etc"
             ( cd "$HOME/etc" && rm -f devprofile && ln -s -f "../$1" devprofile ) && . "$HOME/.bash_profile"
             ;;
         esac
