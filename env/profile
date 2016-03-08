@@ -4,9 +4,12 @@
 # Copyright 2015-2016 Andrew Bettison
 
 # If shellboost is not already initialised, then check if it is installed in
-# some well-known places, and initialise it.
-case $(type __shellboost_include) in
-*'shell function')
+# some well-known places, and initialise it.  The following command works on
+# Bash and Dash.  The Dash 'type' command does not support the '-t' option, so
+# it prints "-t: not found\n__shellboost_include is a shell function", whereas
+# Bash just prints "function".
+case $(type -t __shellboost_include 2>/dev/null) in
+*function)
     ;;
 *)
     if [ ! -f "$SHELLBOOST/etc/shellboost/libsh/include.sh" -a -f "$HOME/etc/shellboost/libsh/include.sh" ]; then
