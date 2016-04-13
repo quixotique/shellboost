@@ -36,17 +36,26 @@ install() {
     local dst="${2?}"
     [ -e "$src" ]
     if $opt_force || [ ! -e "$dst" ]; then
+        local dir="${dst%/*}"
+        if [ "$dir" != "$dst" ]; then
+            src="$HOME/$src"
+            if [ ! -d "$dir" ]; then
+                echo "mkdir $dir"
+                mkdir -p "$dir"
+            fi
+        fi
         echo "link $dst  ->  $src"
         ln -s -f "$src" "$dst"
     fi
 }
 
 cd "${HOME?}"
-install etc/shellboost/env/bash_profile .bash_profile
-install etc/shellboost/env/bashrc       .bashrc
-install etc/shellboost/env/gitconfig    .gitconfig
-install etc/shellboost/env/gitexclude   .gitexclude
-install etc/shellboost/env/hgrc         .hgrc
-install etc/shellboost/env/profile      .profile
-install etc/shellboost/env/setpath      .setpath
-install etc/shellboost/env/vimrc        .vimrc
+install etc/shellboost/env/bash_profile   .bash_profile
+install etc/shellboost/env/bashrc         .bashrc
+install etc/shellboost/env/gitconfig      .gitconfig
+install etc/shellboost/env/gitexclude     .gitexclude
+install etc/shellboost/env/hgrc           .hgrc
+install etc/shellboost/env/profile        .profile
+install etc/shellboost/env/setpath        .setpath
+install etc/shellboost/env/vimrc          .vimrc
+install etc/shellboost/env/openbox_rc.xml .config/openbox/rc.xml
