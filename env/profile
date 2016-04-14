@@ -12,7 +12,7 @@ case $(type -t __shellboost_include 2>/dev/null) in
 *function)
     ;;
 *)
-    if [ ! -f "$SHELLBOOST/etc/shellboost/libsh/include.sh" -a -f "$HOME/etc/shellboost/libsh/include.sh" ]; then
+    if [ ! -f "$SHELLBOOST/libsh/include.sh" -a -f "$HOME/etc/shellboost/libsh/include.sh" ]; then
         export SHELLBOOST="$HOME/etc/shellboost"
     fi
     if [ -r "$SHELLBOOST/libsh/include.sh" ]; then

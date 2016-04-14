@@ -6,7 +6,9 @@
 # Work out where shellboost is installed and bootstrap shellboost's include
 # system.  If readlink(1) is not installed, this will fail and fall back to
 # the logic in .profile
-export SHELLBOOST="$(readlink -q -e "${BASH_SOURCE[0]}" 2>/dev/null)" 2>/dev/null
+__env_bash_profile="$(readlink -q -e "${BASH_SOURCE[0]}" 2>/dev/null)" 2>/dev/null
+export SHELLBOOST="${__env_bash_profile%/env/bash_profile}"
+unset __env_bash_profile
 if [ -f "$SHELLBOOST/libsh/include.sh" ]; then
     source "$SHELLBOOST/libsh/include.sh"
 else
@@ -19,9 +21,9 @@ test -r "$HOME/.bashrc" && source "$HOME/.bashrc"
 test -r "$HOME/.profile" && source "$HOME/.profile"
 
 # Source current development profile, if there is one.
-case $(builtin type -t _init_devprofile) in
+case $(builtin type -t _init_current_devprofile) in
 function)
-    _init_devprofile
+    _init_current_devprofile
     ;;
 esac
 

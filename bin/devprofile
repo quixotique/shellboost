@@ -1,0 +1,12 @@
+#!/bin/bash
+# vim:sts=4 sw=4 et
+# Execute a command in a given development profile environment
+# Copyright 2016 Andrew Bettison
+
+source "$HOME/.bash_profile"
+__shellboost_include libsh/devprofile.bash || exit $?
+unset DEVPROFILE # un-export
+DEVPROFILE="${1?}"
+shift
+source "$HOME/.bash_profile"
+exec "$@"

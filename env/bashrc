@@ -78,55 +78,21 @@ fi
 
 # Development profile (only in Bash).
 
-# User command to view/set current profile.
+__shellboost_include libsh/devprofile.bash
+
 p() {
     case $# in
-    0) ( cd -P "$HOME/etc/devprofile" >/dev/null 2>/dev/null && echo "${PWD##*/}" ); return 0;;
+    0)
+        echo_current_devprofile || return $?
+        ;;
+    *)
+        if ! set_current_devprofile "$1"; then
+            echo "Not a devprofile: $1" >&2
+            return 1
+        fi
+        ;;
     esac
-    if [ "$1" = - -o -r "$HOME/$1/.bash_profile" -o -r "$HOME/$1/.profile" ]; then
-        case $(builtin type -t __undo_profile) in
-        function)
-            __undo_profile
-            unset -f __undo_profile
-            ;;
-        esac
-        case "$1" in
-        -)
-            rm -rf "$HOME/etc/devprofile"
-            . "$HOME/.bash_profile"
-            ;;
-        *)
-            mkdir -p "$HOME/etc"
-            ( cd "$HOME/etc" && rm -f devprofile && ln -s -f "../$1" devprofile ) && . "$HOME/.bash_profile"
-            ;;
-        esac
-    else
-        echo "Not a profile directory: $1" >&2
-        return 1
-    fi
-}
-
-# Invoked by .bash_profile
-_init_devprofile() {
-    if [ -r "$HOME/etc/devprofile/.bash_profile" ]; then
-        . "$HOME/etc/devprofile/.bash_profile"
-    elif [ -r "$HOME/etc/devprofile/.profile" ]; then
-        . "$HOME/etc/devprofile/.profile"
-    fi
-}
-
-# For argument completion.
-_complete_devprofiles() {
-    local __had_nullglob=false
-    shopt -q nullglob && __had_nullglob=true
-    shopt -s nullglob
-    local __prof
-    for __prof in "$HOME/$2"*/.bash_profile "$HOME/$2"*/.profile ; do
-        __prof=${__prof%/.*profile}
-        __prof=${__prof##*/}
-        COMPREPLY+=("$__prof")
-    done
-    $__had_nullglob || shopt -u nullglob
+    return 0
 }
 
 complete -F _complete_devprofiles p
