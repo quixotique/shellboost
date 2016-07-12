@@ -73,8 +73,8 @@ let mapleader = "\\"
 let maplocalleader = ""
 
 " Tab and window mappings
-nmap <C-S-PageUp> :tabmove <C-R>=max([0,tabpagenr()-2])<CR><CR>
-nmap <C-S-PageDown> :tabmove <C-R>=tabpagenr()<CR><CR>
+nmap <C-S-PageUp> :tabmove -1<CR>
+nmap <C-S-PageDown> :tabmove +1<CR>
 nmap <Leader>] :exec 'tab' 'tjump' expand('<cword>')<CR>
 nmap <Leader>[ :call <SID>closeCurrentTab()<CR>
 
