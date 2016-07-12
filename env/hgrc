@@ -1,1 +1,6 @@
 %include $HGRC_SWITCH
+
+
+[extensions]
+color = 
+pager = 
