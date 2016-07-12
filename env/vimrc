@@ -9,7 +9,7 @@ let g:loaded_vimrc_andrewb = 1
 " GUI preferences
 
 set title               " Set the window title to the file name
-set guifont=Monospace\ 10
+set guifont=Inconsolata\ 12.5,Monospace\ 10
 
 " A sensible colour scheme with an off-white background
 silent highlight clear Normal
