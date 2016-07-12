@@ -32,6 +32,9 @@ esac
 # timeout expired, or the network connection was broken.
 export NO_AT_BRIDGE=1
 
+# X windows key repeat.
+[ -n "$DISPLAY" ] && xset r rate 330 80
+
 # General application settings.
 export EDITOR=/usr/bin/vim
 [ -x "$SHELLBOOST/bin/gvim-nofork" ] && export EDITOR="$SHELLBOOST/bin/gvim-nofork"
