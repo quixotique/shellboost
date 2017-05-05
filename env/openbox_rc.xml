@@ -383,18 +383,11 @@
         <command>gnome-screenshot -w</command>
       </action>
     </keybind>
-    <!-- Keybindings for launching applications -->
-    <!--
-    <keybind key="W-space">
+    <keybind key="C-W-Print">
       <action name="Execute">
-        <startupnotify>
-          <enabled>true</enabled>
-          <name>Launcher</name>
-        </startupnotify>
-        <command>gnome-do</command>
+        <command>gnome-screenshot -w</command>
       </action>
     </keybind>
-    -->
     <!-- Keybindings for running applications -->
     <keybind key="W-F1">
       <action name="Execute">
@@ -439,6 +432,12 @@
           <name>Volume Control</name>
         </startupnotify>
         <command>pavucontrol</command>
+      </action>
+    </keybind>
+    <!-- Launch gnome-screenshot when Print is pressed -->
+    <keybind key="Print">
+      <action name="Execute">
+        <command>gnome-screenshot</command>
       </action>
     </keybind>
   </keyboard>
