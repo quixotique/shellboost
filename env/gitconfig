@@ -21,5 +21,12 @@ default = simple
 fontui = -family \"DejaVu Sans\" -size 10 -weight normal -slant roman -underline 0 -overstrike 0
 fontdiff = -family \"DejaVu Sans Mono\" -size 10 -weight normal -slant roman -underline 0 -overstrike 0
 
+[core]
+notesRef = refs/notes/hg
+
+[remote-hg]
+track-branches = true
+hg-git-compat  = false
+
 [include]
 path = ~/etc/devprofile/.gitconfig
