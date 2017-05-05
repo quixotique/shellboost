@@ -234,6 +234,16 @@
         <desktop>6</desktop>
       </action>
     </keybind>
+    <keybind key="W-7">
+      <action name="Desktop">
+        <desktop>7</desktop>
+      </action>
+    </keybind>
+    <keybind key="W-8">
+      <action name="Desktop">
+        <desktop>8</desktop>
+      </action>
+    </keybind>
     <keybind key="W-End">
       <action name="ToggleShowDesktop"/>
     </keybind>
