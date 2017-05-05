@@ -420,18 +420,27 @@
       <action name="Execute">
         <startupnotify>
           <enabled>true</enabled>
-          <name>Compose E-mail</name>
+          <name>Chat</name>
         </startupnotify>
-        <command>gnome-open mailto:</command>
+        <command>pidgin</command>
       </action>
     </keybind>
     <keybind key="W-F5">
       <action name="Execute">
         <startupnotify>
           <enabled>true</enabled>
-          <name>Volume Control</name>
+          <name>Files</name>
         </startupnotify>
-        <command>pavucontrol</command>
+        <command>nautilus</command>
+      </action>
+    </keybind>
+    <keybind key="W-F6">
+      <action name="Execute">
+        <startupnotify>
+          <enabled>true</enabled>
+          <name>System Monitor</name>
+        </startupnotify>
+        <command>gnome-system-monitor</command>
       </action>
     </keybind>
     <!-- Launch gnome-screenshot when Print is pressed -->
