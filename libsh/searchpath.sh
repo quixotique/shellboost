@@ -37,9 +37,12 @@ searchpath_find() {
    IFS="$__IFS"
    return 1
 }
+
+# searchpath_contains PATHVAR [ value1 [ value2 ... ] ]
+# Returns true if any of value1 or value2 etc. are in $PATHVAR
 searchpath_contains() {
    local __var __path __arg __element __IFS
-   __var="$1"
+   __var="${1?}"
    shift
    eval __path=\"\$$__var\"
    __IFS="$IFS"
@@ -56,30 +59,30 @@ searchpath_contains() {
    return 1
 }
 
-# searchpath_append NAME [ value1 [ value2 ... ] ]
-# Appends value1, value2 etc. to $NAME if not already somewhere in $NAME
+# searchpath_append PATHVAR [ value1 [ value2 ... ] ]
+# Appends value1, value2 etc. to $PATHVAR if not already somewhere in $PATHVAR
 searchpath_append() {
    local __var __arg
-   __var="$1"
+   __var="${1?}"
    shift
    for __arg; do
       searchpath_contains $__var "$__arg" || eval $__var=\"\$$__var\${$__var:+:}\$__arg\"
    done
 }
 
-# searchpath_append_force NAME [ value1 [ value2 ... ] ]
-# Appends value1, value2 etc. to $NAME after removing value1, value2 etc.
-# from anywhere else in $NAME
+# searchpath_append_force PATHVAR [ value1 [ value2 ... ] ]
+# Appends value1, value2 etc. to $PATHVAR after removing value1, value2 etc.
+# from anywhere else in $PATHVAR
 searchpath_append_force() {
    searchpath_remove "$@"
    searchpath_append "$@"
 }
 
-# searchpath_prepend NAME [ value1 [ value2 ... ] ]
-# Prepends value1, value2 etc. to $NAME if not already somewhere in $NAME
+# searchpath_prepend PATHVAR [ value1 [ value2 ... ] ]
+# Prepends value1, value2 etc. to $PATHVAR if not already somewhere in $PATHVAR
 searchpath_prepend() {
    local __var __i __arg
-   __var="$1"
+   __var="${1?}"
    shift
    __i=$#
    while [ $__i -gt 0 ]; do
@@ -89,19 +92,19 @@ searchpath_prepend() {
    done
 }
 
-# searchpath_prepend_force NAME [ value1 [ value2 ... ] ]
-# Prepends value1, value2 etc. to $NAME after removing value1, value2 etc.
-# from anywhere else in $NAME
+# searchpath_prepend_force PATHVAR [ value1 [ value2 ... ] ]
+# Prepends value1, value2 etc. to $PATHVAR after removing value1, value2 etc.
+# from anywhere else in $PATHVAR
 searchpath_prepend_force() {
    searchpath_remove "$@"
    searchpath_prepend "$@"
 }
 
-# searchpath_remove NAME [ value1 [ value2 ... ] ]
-# Removes value1, value2 etc. from $NAME
+# searchpath_remove PATHVAR [ value1 [ value2 ... ] ]
+# Removes value1, value2 etc. from $PATHVAR
 searchpath_remove() {
    local __var __path __newpath __arg __element __IFS
-   __var="$1"
+   __var="${1?}"
    shift
    eval __path=\"\$$__var\"
    __newpath=
@@ -117,11 +120,11 @@ searchpath_remove() {
    eval $__var=\"\$__newpath\"
 }
 
-# searchpath_remove_prefixed NAME [ prefix1 [ prefix2 ... ] ]
-# Removes all elements starting with prefix1 or prefix2 etc. from $NAME
+# searchpath_remove_prefixed PATHVAR [ prefix1 [ prefix2 ... ] ]
+# Removes all elements starting with prefix1 or prefix2 etc. from $PATHVAR
 searchpath_remove_prefixed() {
    local __var __path __newpath __arg __element __IFS
-   __var="$1"
+   __var="${1?}"
    shift
    eval __path=\"\$$__var\"
    __newpath=
