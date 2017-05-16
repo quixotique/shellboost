@@ -2,6 +2,12 @@ case $0 in */*)D="${0%/*}";;*)D=.;;esac
 . $D/../libsh/searchpath.sh
 . $D/../libsh/assert.sh
 
+X=/bin:/usr/bin:/usr/local/bin
+assert [ "$(searchpath_find $X -e sh)" = /bin/sh ]
+assert [ "$(searchpath_find $X -x sh)" = /bin/sh ]
+assert ! searchpath_find $X -w sh
+assert ! searchpath_find $X -e nonexistentexecutable
+
 X=a:b:c
 assert searchpath_contains X a
 assert searchpath_contains X b

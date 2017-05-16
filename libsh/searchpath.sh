@@ -15,8 +15,28 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-# searchpath_contains NAME [ value1 [ value2 ... ] ]
-# Returns true if any of value1 or value2 etc. are in $NAME
+# searchpath_find path -testop name
+#
+# Traverses the given path, executing 'test -testop $component/name' for every component,
+# if test returns true, prints $component/name and returns true immediately 
+# otherwise, returns false after full traversal if no test returned true
+searchpath_find() {
+   local __path __element __IFS
+   __path="${1?}"
+   __testop="${2?}"
+   __name="${3?}"
+   __IFS="$IFS"
+   IFS=:
+   for __element in $__path; do
+       if test "$__testop" "$__element/$__name"; then
+           IFS="$__IFS"
+           echo "$__element/$__name"
+           return 0
+       fi
+   done
+   IFS="$__IFS"
+   return 1
+}
 searchpath_contains() {
    local __var __path __arg __element __IFS
    __var="$1"
