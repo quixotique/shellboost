@@ -1,32 +1,30 @@
 [core]
-excludesfile = ~/.gitexclude
+	excludesfile = ~/.gitexclude
+	notesRef = refs/notes/hg
 
 [user]
-name = Andrew Bettison
-email = andrew@iverin.com.au
+	name = Andrew Bettison
+	email = andrew@iverin.com.au
 
 [alias]
-s = status --short
-st = status --short
-co = checkout
-up = merge --ff-only
+	s = status --short
+	st = status --short
+	co = checkout
+	up = merge --ff-only
 
 [merge]
-defaultToUpstream = true
+	defaultToUpstream = true
 
 [push]
-default = simple
+	default = simple
 
 [gui]
-fontui = -family \"DejaVu Sans\" -size 10 -weight normal -slant roman -underline 0 -overstrike 0
-fontdiff = -family \"DejaVu Sans Mono\" -size 10 -weight normal -slant roman -underline 0 -overstrike 0
-
-[core]
-notesRef = refs/notes/hg
+	fontui = -family \"DejaVu Sans\" -size 10 -weight normal -slant roman -underline 0 -overstrike 0
+	fontdiff = -family \"DejaVu Sans Mono\" -size 10 -weight normal -slant roman -underline 0 -overstrike 0
 
 [remote-hg]
-track-branches = true
-hg-git-compat  = false
+	track-branches = true
+	hg-git-compat  = false
 
 [include]
-path = ~/etc/devprofile/.gitconfig
+	path = ~/etc/devprofile/.gitconfig
