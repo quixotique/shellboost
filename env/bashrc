@@ -83,16 +83,18 @@ __shellboost_include libsh/devprofile.bash
 p() {
     case $# in
     0)
-        echo_current_devprofile || return $?
+        echo_current_devprofile
         ;;
-    *)
+    1)
         if ! set_current_devprofile "$1"; then
             echo "Not a devprofile: $1" >&2
             return 1
         fi
         ;;
+    *)
+        run_in_devprofile "$@"
+        ;;
     esac
-    return 0
 }
 
 complete -F _complete_devprofiles p

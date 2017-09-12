@@ -19,10 +19,6 @@
 # A valid devprofile name is the name of any immediate sub-directory of $HOME
 # that contains either a .bash_profile or .profile file:
 
-_is_valid_devprofile() {
-    [ -r "$HOME/$1/.bash_profile" -o -r "$HOME/$1/.profile" ]
-}
-
 echo_current_devprofile() {
     local devprofile=$(
         if [ "$DEVPROFILE" = - ]; then
@@ -46,9 +42,7 @@ echo_current_devprofile() {
 
 set_current_devprofile() {
     local devprofile="${1?}"
-    if [ "$devprofile" != - ] && ! _is_valid_devprofile "$devprofile"; then
-        return 1
-    fi
+    _is_valid_devprofile_arg "$devprofile" || return 1
     case "$devprofile" in
     -)
         rm -rf "$HOME/etc/devprofile"
@@ -61,7 +55,24 @@ set_current_devprofile() {
         ;;
     esac
     _init_current_devprofile
-    return 0
+}
+
+run_in_devprofile() {
+    local devprofile="${1?}"
+    shift
+    if ! _is_valid_devprofile_arg "$devprofile"; then
+        echo "Invalid devprofile: $devprofile" >&2
+        return 1
+    fi
+    ( export DEVPROFILE="$devprofile"; _init_current_devprofile && "$@" )
+}
+
+_is_valid_devprofile() {
+    [ -r "$HOME/$1/.bash_profile" -o -r "$HOME/$1/.profile" ]
+}
+
+_is_valid_devprofile_arg() {
+    [ "$1" == - ] || _is_valid_devprofile "$1"
 }
 
 _init_devprofile_directory() {
@@ -85,24 +96,49 @@ _init_current_devprofile() {
         ;;
     esac
     if [ "$DEVPROFILE" = - ]; then
-        true
-    elif [ -n "$DEVPROFILE" ] && _is_valid_devprofile "$DEVPROFILE"; then
+        return 0
+    elif ${DEVPROFILE+:} false; then
         _init_devprofile_directory "$HOME/$DEVPROFILE"
-    else
+    elif [ -L "$HOME/etc/devprofile" ]; then
         _init_devprofile_directory "$HOME/etc/devprofile"
+    else
+        return 0 # no current profile
     fi
 }
 
 # For argument completion.
 _complete_devprofiles() {
-    local __had_nullglob=false
-    shopt -q nullglob && __had_nullglob=true
-    shopt -s nullglob
-    local __prof
-    for __prof in "$HOME/$2"*/.bash_profile "$HOME/$2"*/.profile ; do
-        __prof=${__prof%/.*profile}
-        __prof=${__prof##*/}
-        COMPREPLY+=("$__prof")
-    done
-    $__had_nullglob || shopt -u nullglob
+    local cur prev words cword
+    _init_completion || return
+
+    case $cword in
+    1)
+        local __had_nullglob=false
+        shopt -q nullglob && __had_nullglob=true
+        shopt -s nullglob
+        local __prof
+        for __prof in "$HOME/$2"*/.bash_profile "$HOME/$2"*/.profile ; do
+            __prof=${__prof%/.*profile}
+            __prof=${__prof##*/}
+            COMPREPLY+=("$__prof")
+        done
+        $__had_nullglob || shopt -u nullglob
+        ;;
+    *)
+        # Perform normal command completion in the devprofile's environment,
+        # mainly to pick up its $PATH.
+        if _is_valid_devprofile_arg "${words[1]}"; then
+            local __ifs="$IFS"
+            IFS='
+'
+            COMPREPLY=($( (
+                export DEVPROFILE="${words[1]}"
+                _init_current_devprofile 
+                _command_offset 2
+                echo "${COMPREPLY[*]}"
+                )))
+            IFS="$__ifs"
+        fi
+        ;;
+    esac
 }
