@@ -54,41 +54,11 @@ set_current_devprofile() {
                 ln -s -f "../$devprofile" devprofile ) || return $?
         ;;
     esac
-    _init_current_devprofile
-}
-
-run_in_devprofile() {
-    local devprofile="${1?}"
-    shift
-    if ! _is_valid_devprofile_arg "$devprofile"; then
-        echo "Invalid devprofile: $devprofile" >&2
-        return 1
-    fi
-    ( export DEVPROFILE="$devprofile"; _init_current_devprofile && "$@" )
-}
-
-_is_valid_devprofile() {
-    [ -r "$HOME/$1/.bash_profile" -o -r "$HOME/$1/.profile" ]
-}
-
-_is_valid_devprofile_arg() {
-    [ "$1" == - ] || _is_valid_devprofile "$1"
-}
-
-_init_devprofile_directory() {
-    local dir="${1?}"
-    if [ -r "$dir/.bash_profile" ]; then
-        . "$dir/.bash_profile"
-        return 0
-    elif [ -r "$dir/.profile" ]; then
-        . "$dir/.profile"
-        return 0
-    fi
-    return 1
+    init_devprofile
 }
 
 # Invoked by .bash_profile
-_init_current_devprofile() {
+init_devprofile() {
     case $(builtin type -t __undo_profile) in
     function)
         __undo_profile
@@ -106,11 +76,20 @@ _init_current_devprofile() {
     fi
 }
 
+run_in_devprofile() {
+    local devprofile="${1?}"
+    shift
+    if ! _is_valid_devprofile_arg "$devprofile"; then
+        echo "Invalid devprofile: $devprofile" >&2
+        return 1
+    fi
+    ( export DEVPROFILE="$devprofile"; init_devprofile && "$@" )
+}
+
 # For argument completion.
-_complete_devprofiles() {
+complete_devprofiles() {
     local cur prev words cword
     _init_completion || return
-
     case $cword in
     1)
         local __had_nullglob=false
@@ -133,7 +112,7 @@ _complete_devprofiles() {
 '
             COMPREPLY=($( (
                 export DEVPROFILE="${words[1]}"
-                _init_current_devprofile 
+                init_devprofile 
                 _command_offset 2
                 echo "${COMPREPLY[*]}"
                 )))
@@ -141,4 +120,26 @@ _complete_devprofiles() {
         fi
         ;;
     esac
+}
+
+# Private functions, only to be invoked within this source file.
+
+_is_valid_devprofile() {
+    [ -r "$HOME/$1/.bash_profile" -o -r "$HOME/$1/.profile" ]
+}
+
+_is_valid_devprofile_arg() {
+    [ "$1" == - ] || _is_valid_devprofile "$1"
+}
+
+_init_devprofile_directory() {
+    local dir="${1?}"
+    if [ -r "$dir/.bash_profile" ]; then
+        . "$dir/.bash_profile"
+    elif [ -r "$dir/.profile" ]; then
+        . "$dir/.profile"
+    else
+        return 1
+    fi
+    return 0
 }

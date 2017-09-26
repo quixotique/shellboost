@@ -21,9 +21,9 @@ test -r "$HOME/.bashrc" && source "$HOME/.bashrc"
 test -r "$HOME/.profile" && source "$HOME/.profile"
 
 # Source current development profile, if there is one.
-case $(builtin type -t _init_current_devprofile) in
+case $(builtin type -t init_devprofile) in
 function)
-    _init_current_devprofile
+    init_devprofile
     ;;
 esac
 

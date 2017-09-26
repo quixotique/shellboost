@@ -97,7 +97,7 @@ p() {
     esac
 }
 
-complete -F _complete_devprofiles p
+complete -F complete_devprofiles p
 
 # Mail reading completion
 
