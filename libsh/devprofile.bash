@@ -40,6 +40,23 @@ echo_current_devprofile() {
     return 2
 }
 
+echo_devprofile_that_contains_path() {
+    local toplevel_real home_real
+    toplevel_real="$(/usr/bin/realpath "$toplevel")" || return $?
+    home_real="$(/usr/bin/realpath "$HOME")" || return $?
+    case "$toplevel_real/" in
+    "$home_real"/*/*)
+        local devprofile="${toplevel_real#"$home_real"/}"
+        devprofile="${devprofile%%/*}"
+        if _is_valid_devprofile "$devprofile"; then
+            echo "$devprofile"
+            return 0
+        fi
+        ;;
+    esac
+    return 1
+}
+
 set_current_devprofile() {
     local devprofile="${1?}"
     _is_valid_devprofile_arg "$devprofile" || return 1
@@ -57,7 +74,7 @@ set_current_devprofile() {
     init_devprofile
 }
 
-# Invoked by .bash_profile
+# Invoked by .bash_profile and bin/git
 init_devprofile() {
     case $(builtin type -t __undo_profile) in
     function)
