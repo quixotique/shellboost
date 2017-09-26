@@ -15,20 +15,28 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-# searchpath_find path -testop name
+# searchpath_find path name [predicate ...]
 #
-# Traverses the given path, executing 'test -testop $component/name' for every component,
-# if test returns true, prints $component/name and returns true immediately 
-# otherwise, returns false after full traversal if no test returned true
+# Traverses the given path, executing "predicate ... $component/name" for every
+# component; if the predicate command returns true, prints $component/name and
+# returns true immediately otherwise, returns false after full traversal if no
+# test returned true.  If no predicate is supplied, uses "test -x".
+#
+# Example:
+#     searchpath_find "$PATH" awk
+# prints
+#     /usr/bin/awk
+#
 searchpath_find() {
-   local __path __element __IFS
+   local __path __name __element __IFS
    __path="${1?}"
-   __testop="${2?}"
-   __name="${3?}"
+   __name="${2?}"
+   shift 2
+   [ $# -ne 0 ] || set -- test -x
    __IFS="$IFS"
    IFS=:
    for __element in $__path; do
-       if test "$__testop" "$__element/$__name"; then
+       if "$@" "$__element/$__name"; then
            IFS="$__IFS"
            echo "$__element/$__name"
            return 0
