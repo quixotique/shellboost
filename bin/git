@@ -9,11 +9,11 @@
 # script is the first 'git' command in the user's $PATH.
 
 # Bootstrap shellboost.
-if [ ! -f "$SHELLBOOST/etc/shellboost/libsh/include.sh" -a -f "$HOME/etc/shellboost/libsh/include.sh" ]; then
-   export SHELLBOOST="$HOME/etc/shellboost"
-   . "$SHELLBOOST/libsh/include.sh"
+if [ ! -f "$SHELLBOOST/libsh/include.sh" -a -r "${0%/bin/*}/libsh/include.sh" ]; then
+   export SHELLBOOST="${0%/bin/*}"
 fi
 
+. "$SHELLBOOST/libsh/include.sh" || exit $?
 __shellboost_include libsh/devprofile.bash || exit $?
 __shellboost_include libsh/searchpath.sh || exit $?
 
