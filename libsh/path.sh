@@ -34,8 +34,7 @@ abspath() {
 path_trimsep() {
     case "$1" in
     /) echo /;;
-    */) path_trimsep "${1%/}";;
-    *) printf '%s\n' "$1";;
+    */) path_trimsep "${1%/}";; *) printf '%s\n' "$1";;
     esac
 }
 
@@ -79,6 +78,15 @@ path_simplify() {
    ..) echo ..;;
    *) printf '%s\n' "$1";;
    esac
+}
+
+try_realpath_physical() {
+   if [ -x /usr/bin/realpath ]; then
+      /usr/bin/realpath --physical "$1"
+   else
+      # TODO: attempt realpath(1) in shell using cd -P and/or pwd -P
+      path_simplify "$1"
+   fi
 }
 
 relpath() {

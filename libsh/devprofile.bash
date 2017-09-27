@@ -16,6 +16,8 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+__shellboost_include libsh/path.sh || return $?
+
 # A valid devprofile name is the name of any immediate sub-directory of $HOME
 # that contains either a .bash_profile or .profile file:
 
@@ -42,8 +44,8 @@ echo_current_devprofile() {
 
 echo_devprofile_that_contains_path() {
     local toplevel_real home_real
-    toplevel_real="$(/usr/bin/realpath "$toplevel")" || return $?
-    home_real="$(/usr/bin/realpath "$HOME")" || return $?
+    toplevel_real="$(try_realpath_physical "$toplevel")" || return $?
+    home_real="$(try_realpath_physical "$HOME")" || return $?
     case "$toplevel_real/" in
     "$home_real"/*/*)
         local devprofile="${toplevel_real#"$home_real"/}"
