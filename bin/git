@@ -26,34 +26,42 @@ if ! GIT=$(searchpath_find "$PATH" git executable_not_self); then
    exit 1
 fi
 
+opt_help=false
 gitoptions=()
 while [[ $# -gt 0 ]]; do
    case "$1" in
+   --help) opt_help=true; break;;
    -C|-c) gitoptions+=("$1" "$2"); shift 2;;
    -*) gitoptions+=("$1"); shift 1;;
    *) break;;
    esac
 done
 
-toplevel="$("$GIT" "${gitoptions[@]}" rev-parse --show-toplevel 2>/dev/null || echo "$PWD")"
+if ! $opt_help; then
 
-# Use the user.name and user.email settings from the DEVPROFILE's .gitconfig
-# file if it exists, but only if the Git repo itself does not configure its own
-# user.name/user.email locally.
+   # Find the root directory of the repo being used by the command.
 
-if devprofile=$(echo_devprofile_that_contains_path "$toplevel") && [[ -r "$HOME/$devprofile/.gitconfig" ]]; then
-   if name=$("$GIT" "${gitoptions[@]}" config --file "$HOME/$devprofile/.gitconfig" --get user.name) &&
-      ! "$GIT" "${gitoptions[@]}" config --local --get user.name >/dev/null
-   then
-      export GIT_AUTHOR_NAME="$name"
-      export GIT_COMMITTER_NAME="$name"
+   toplevel="$("$GIT" "${gitoptions[@]}" rev-parse --show-toplevel 2>/dev/null || echo "$PWD")"
+
+   # Use the user.name and user.email settings from the DEVPROFILE's .gitconfig
+   # file if it exists, but only if the Git repo itself does not configure its own
+   # user.name/user.email locally.
+
+   if devprofile=$(echo_devprofile_that_contains_path "$toplevel") && [[ -r "$HOME/$devprofile/.gitconfig" ]]; then
+      if name=$("$GIT" "${gitoptions[@]}" config --file "$HOME/$devprofile/.gitconfig" --get user.name) &&
+         ! "$GIT" "${gitoptions[@]}" config --local --get user.name >/dev/null
+      then
+         export GIT_AUTHOR_NAME="$name"
+         export GIT_COMMITTER_NAME="$name"
+      fi
+      if email=$("$GIT" "${gitoptions[@]}" config --file "$HOME/$devprofile/.gitconfig" --get user.email) &&
+         ! "$GIT" "${gitoptions[@]}" config --local --get user.email >/dev/null
+      then
+         export GIT_AUTHOR_EMAIL="$email"
+         export GIT_COMMITTER_EMAIL="$email"
+      fi
    fi
-   if email=$("$GIT" "${gitoptions[@]}" config --file "$HOME/$devprofile/.gitconfig" --get user.email) &&
-      ! "$GIT" "${gitoptions[@]}" config --local --get user.email >/dev/null
-   then
-      export GIT_AUTHOR_EMAIL="$email"
-      export GIT_COMMITTER_EMAIL="$email"
-   fi
+
 fi
 
 exec "$GIT" "${gitoptions[@]}" "$@"
