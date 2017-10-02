@@ -44,7 +44,7 @@ echo_current_devprofile() {
 
 echo_devprofile_that_contains_path() {
     local toplevel_real home_real
-    toplevel_real="$(try_realpath_physical "$toplevel")" || return $?
+    toplevel_real="$(try_realpath_physical "$1")" || return $?
     home_real="$(try_realpath_physical "$HOME")" || return $?
     case "$toplevel_real/" in
     "$home_real"/*/*)
