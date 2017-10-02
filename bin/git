@@ -41,13 +41,16 @@ if ! $opt_help; then
 
    # Find the root directory of the repo being used by the command.
 
-   toplevel="$("$GIT" "${gitoptions[@]}" rev-parse --show-toplevel 2>/dev/null || echo "$PWD")"
+   repo_root="$("$GIT" "${gitoptions[@]}" rev-parse --show-toplevel 2>/dev/null)"
 
    # Use the user.name and user.email settings from the DEVPROFILE's .gitconfig
    # file if it exists, but only if the Git repo itself does not configure its own
    # user.name/user.email locally.
 
-   if devprofile=$(echo_devprofile_that_contains_path "$toplevel") && [[ -r "$HOME/$devprofile/.gitconfig" ]]; then
+   if [ -d "$repo_root" ] &&
+      devprofile=$(echo_devprofile_that_contains_path "$repo_root") &&
+      [[ -r "$HOME/$devprofile/.gitconfig" ]]
+   then
       if name=$("$GIT" "${gitoptions[@]}" config --file "$HOME/$devprofile/.gitconfig" --get user.name) &&
          ! "$GIT" "${gitoptions[@]}" config --local --get user.name >/dev/null
       then
