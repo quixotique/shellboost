@@ -1,6 +1,7 @@
 [core]
 	excludesfile = ~/.gitexclude
 	notesRef = refs/notes/hg
+	editor = vim
 
 [user]
 	name = Andrew Bettison
