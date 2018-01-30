@@ -153,6 +153,8 @@ _is_valid_devprofile_arg() {
 
 _init_devprofile_directory() {
     local dir="${1?}"
+    # Devprofile is only available in Bash, so always prefer .bash_profile over
+    # .profile.
     if [ -r "$dir/.bash_profile" ]; then
         . "$dir/.bash_profile"
     elif [ -r "$dir/.profile" ]; then
