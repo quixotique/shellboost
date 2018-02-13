@@ -8,10 +8,11 @@
 	email = andrew@iverin.com.au
 
 [alias]
+	b = branch -avv
 	s = status --short
 	st = status --short
 	co = checkout
-	up = merge --ff-only
+	ff = merge --ff-only
 
 [merge]
 	defaultToUpstream = true
