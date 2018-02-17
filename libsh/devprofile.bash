@@ -73,7 +73,7 @@ set_current_devprofile() {
                 ln -s -f "../$devprofile" devprofile ) || return $?
         ;;
     esac
-    init_devprofile
+    source "$HOME/.bash_profile" # invokes init_devprofile()
 }
 
 # Invoked by .bash_profile and bin/git
