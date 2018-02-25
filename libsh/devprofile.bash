@@ -64,7 +64,7 @@ set_current_devprofile() {
     _is_valid_devprofile_arg "$devprofile" || return 1
     case "$devprofile" in
     -)
-        rm -rf "$HOME/etc/devprofile"
+        rm -f "$HOME/etc/devprofile"
         ;;
     *)
         ( mkdir -p "$HOME/etc" &&

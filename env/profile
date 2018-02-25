@@ -1,7 +1,7 @@
 # .profile
 # vim:sts=4 sw=4 et
 # Bourne shell (not just Bash!) login initialisation
-# Copyright 2015-2016 Andrew Bettison
+# Copyright 2015-2018 Andrew Bettison
 
 # If shellboost is not already initialised, then check if it is installed in
 # some well-known places, and initialise it.  The following command works on
@@ -42,6 +42,7 @@ export PAGER=/usr/bin/less
 export MM_CHARSET=utf-8
 export LESS=-R
 export LESSCHARSET=utf-8
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh /usr/bin/lesspipe)"
 export TMPDIR=/tmp
 export DEBFULLNAME='Andrew Bettison'
 export DEBEMAIL='andrew@iverin.com.au'

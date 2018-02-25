@@ -1,7 +1,7 @@
 # .bash_profile
 # vim:sts=4 sw=4 et
 # Bash shell per-login initialisation
-# Copyright 2015-2016 Andrew Bettison
+# Copyright 2015-2018 Andrew Bettison
 
 # Work out where shellboost is installed and bootstrap shellboost's include
 # system.  If readlink(1) is not installed, this will fail and fall back to
@@ -28,9 +28,15 @@ function)
 esac
 
 # User specific environment and startup programs
-
 unset USERNAME
+
+# Bash command history
+shopt -s histappend # append to .bash_history file, don't overwrite
+export HISTCONTROL=ignoreboth # don't store lines that start with space or are duplicates
 export HISTSIZE=1000000 # keep a lot of history
+export HISTFILESIZE=1000000
 
 # ABO settings
-[ -r "$ABO_HOME/env/bash_profile" ] && source "$ABO_HOME/env/bash_profile"
+if [ -r "$ABO_HOME/env/bash_profile" ]; then
+    source "$ABO_HOME/env/bash_profile"
+fi
