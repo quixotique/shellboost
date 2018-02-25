@@ -70,6 +70,11 @@ unset VIMRC_SWITCH
 unset CSCOPE_DB
 __shellboost_include libsh/vim.sh
 
+# Git settings
+gk() {
+   gitk --all
+}
+
 # Mercurial settings
 unset HGRC_SWITCH
 
