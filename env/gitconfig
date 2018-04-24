@@ -13,6 +13,7 @@
 	st = status --short
 	co = checkout
 	ff = merge --ff-only
+        amend = commit --amend --reset-author
 
 [merge]
 	defaultToUpstream = true
