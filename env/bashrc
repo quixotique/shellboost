@@ -77,8 +77,8 @@ set -o noclobber
 set +o nounset
 set +o ignoreeof
 shopt -s checkwinsize
-shopt -s globasciiranges
-shopt -s globstar
+shopt -s globasciiranges 2>/dev/null
+shopt -s globstar 2>/dev/null
 
 # Colour support.
 
