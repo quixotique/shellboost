@@ -100,18 +100,6 @@ if lspath=$(type -p ls); then
 fi
 unset lspath
 
-# Preferred editors.
-
-if [ "$(type -t gvim)" = file ]; then
-    alias vi=gvim
-    alias vidiff=gvimdiff
-elif [ "$(type -t vim)" = file ]; then
-    alias vi=vim
-    alias vidiff=vimdiff
-else
-    echo "Warning: gvim and vim not available."
-fi
-
 # Development profile (only in Bash).
 
 __shellboost_include libsh/devprofile.bash

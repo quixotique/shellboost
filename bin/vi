@@ -1,0 +1,37 @@
+#!/bin/bash
+# vim:sts=4 sw=4 et
+# Adaptive 'vi' command -- forks gvim(1) if installed and $DISPLAY is set,
+# otherwise executes vim(1) in the terminal, otherwise vi(1).
+# Copyright 2018 Andrew Bettison
+
+installed=false
+
+if [ -n "$DISPLAY" ]; then
+   case $(type -t gvim) in
+   file)
+       installed=true
+       exec gvim "$@"
+       echo "cannot execute gvim" >&2
+       ;;
+   esac
+fi
+
+case $(type -t vim) in
+file)
+    installed=true
+    exec vim "$@"
+    echo "cannot execute vim" >&2
+    ;;
+esac
+
+case $(type -t vi) in
+file)
+    installed=true
+    exec vi "$@"
+    echo "cannot execute vi, giving up" >&2
+    exit 1
+    ;;
+esac
+
+$installed || echo "not installed: gvim or vim or vi" >&2
+exit 1
