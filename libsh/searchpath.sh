@@ -67,6 +67,23 @@ searchpath_contains() {
    return 1
 }
 
+# Predicate function for searchpath_find() and searchpath_contains().
+executable_not_self() {
+   test -x "$1" -a ! \( "$0" -ef "$1" \)
+}
+
+# Finds an executable in $PATH with the same name as the script, excluding the
+# script itself.  Useful in "wrapper" scripts that need to "chain" to the
+# command that they wrap:
+#      exec "$(searchpath_chain)" "$@"
+searchpath_chain() {
+    local __name="${0##*/}"
+    if ! searchpath_find "$PATH" "$__name" executable_not_self; then
+        echo "not found: $__name" >&2
+        exit 1
+    fi
+}
+
 # searchpath_append PATHVAR [ value1 [ value2 ... ] ]
 # Appends value1, value2 etc. to $PATHVAR if not already somewhere in $PATHVAR
 searchpath_append() {

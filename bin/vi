@@ -1,37 +1,49 @@
 #!/bin/bash
 # vim:sts=4 sw=4 et
-# Adaptive 'vi' command -- forks gvim(1) if installed and $DISPLAY is set,
-# otherwise executes vim(1) in the terminal, otherwise vi(1).
 # Copyright 2018 Andrew Bettison
 
-installed=false
+# vi(1) wrapper that invokes a preferred vi-like editor:
+# - gvim(1) if present and $DISPLAY is set, otherwise
+# - vim(1) if present, otherwise
+# - vi(1) if present
+#
+# If invoked via an executable name (symlink) that contains "nofork", then
+# passes the --nofork option if supported by the selected editor.
+
+# Bootstrap shellboost.
+if [ ! -f "$SHELLBOOST/libsh/include.sh" -a -r "${0%/bin/*}/libsh/include.sh" ]; then
+   export SHELLBOOST="${0%/bin/*}"
+fi
+. "$SHELLBOOST/libsh/include.sh" || exit $?
+__shellboost_include libsh/searchpath.sh || exit $?
+
+nofork_opt=
+case $0 in
+*nofork*) nofork_opt=--nofork;;
+esac
+
+found=
 
 if [ -n "$DISPLAY" ]; then
-   case $(type -t gvim) in
-   file)
-       installed=true
-       exec gvim "$@"
-       echo "cannot execute gvim" >&2
-       ;;
-   esac
+    if found=$(searchpath_find "$PATH" gvim executable_not_self); then
+       exec "$found" $nofork_opt "$@"
+       echo "cannot execute $found" >&2
+    fi
 fi
 
-case $(type -t vim) in
-file)
-    installed=true
-    exec vim "$@"
-    echo "cannot execute vim" >&2
-    ;;
-esac
+if found=$(searchpath_find "$PATH" vim executable_not_self); then
+   exec "$found" $nofork_opt "$@"
+   echo "cannot execute $found" >&2
+fi
 
-case $(type -t vi) in
-file)
-    installed=true
-    exec vi "$@"
-    echo "cannot execute vi, giving up" >&2
+if found=$(searchpath_find "$PATH" vi executable_not_self); then
+    if [ -n "$nofork_opt" ] && ! "$found" --help 2>&1 | grep -q -e "$nofork_opt"; then
+        nofork_opt=
+    fi
+    exec "$found" $nofork_opt "$@"
+    echo "cannot execute $found, giving up" >&2
     exit 1
-    ;;
-esac
+fi
 
-$installed || echo "not installed: gvim or vim or vi" >&2
+[ -n "$found" ] || echo "not found: gvim or vim or vi" >&2
 exit 1

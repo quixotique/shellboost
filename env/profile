@@ -36,8 +36,8 @@ export NO_AT_BRIDGE=1
 [ -n "$DISPLAY" ] && xset r rate 330 80
 
 # General application settings.
-export EDITOR=/usr/bin/vim
-[ -x "$SHELLBOOST/bin/gvim-nofork" ] && export EDITOR="$SHELLBOOST/bin/gvim-nofork"
+export EDITOR=vi
+[ -x "$SHELLBOOST/bin/vi-nofork" ] && export EDITOR="$SHELLBOOST/bin/vi-nofork"
 export PAGER=/usr/bin/less
 export MM_CHARSET=utf-8
 export LESS=-R
