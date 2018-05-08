@@ -422,7 +422,7 @@
           <enabled>true</enabled>
           <name>Chat</name>
         </startupnotify>
-        <command>pidgin</command>
+        <command>x-chat-client</command>
       </action>
     </keybind>
     <keybind key="W-F5">
