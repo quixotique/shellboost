@@ -353,12 +353,12 @@
       </action>
     </keybind>
     <keybind key="W-F11">
-        <action name="ToggleMaximize">
-          <direction>vertical</direction>
-        </action>
+      <action name="ToggleMaximize">
+        <direction>vertical</direction>
+      </action>
     </keybind>
     <keybind key="W-F12">
-        <action name="ToggleMaximize"/>
+      <action name="ToggleMaximize"/>
     </keybind>
     <keybind key="W-d">
       <action name="ToggleShowDesktop"/>
