@@ -3,6 +3,9 @@
 # Bash shell per-invocation initialisation
 # Copyright 2015-2018 Andrew Bettison
 
+# If not running interactively, don't do anything
+case $- in *i*);; *) return;; esac
+
 # Test if shellboost is installed in some well-known places, if we don't
 # already know.
 
