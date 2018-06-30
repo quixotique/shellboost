@@ -1,0 +1,24 @@
+#!/bin/bash
+# vim:sts=4 sw=4 et
+# .xsessionrc - per-X-session initialisation
+# Copyright 2018 Andrew Bettison
+
+# The initctl(8) utility only works if this is an Upstart session.
+if [ -n "$UPSTART_SESSION" ]; then
+
+    # Test if shellboost is installed in some well-known places, if we don't
+    # already know.
+    if [ ! -f "$SHELLBOOST/libsh/include.sh" -a -f "$HOME/etc/shellboost/libsh/include.sh" ]; then
+       export SHELLBOOST="$HOME/etc/shellboost"
+       . "$SHELLBOOST/libsh/include.sh"
+    fi
+
+    if __shellboost_include libsh/searchpath.sh; then
+        # Openbox hack to re-enable decorations on GTK3 windows if
+        # https://github.com/PCMan/gtk3-nocsd has been compiled and installed.
+        if GTK3_NOCSD_LIB=$(searchpath_find "${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}/lib:/usr/lib:/usr/local/lib" libgtk3-nocsd.so.0 test -e); then
+            initctl set-env GTK_CSD=0
+            initctl set-env LD_PRELOAD="$GTK3_NOCSD_LIB"
+        fi
+    fi
+fi
