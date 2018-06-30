@@ -59,3 +59,31 @@ assert [ $(relpath /a/b/c/e /a/b/c/d) = ../e ]
 assert [ $(relpath /a/b/e /a/b/c/d) = ../../e ]
 
 assert [ "$IFS" = "$origIFS" ]
+
+chmod -R a+x /tmp/a 2>/dev/null
+chmod -R a+x /tmp/x 2>/dev/null
+rm -rf /tmp/a || exit $?
+rm -rf /tmp/x || exit $?
+
+mkdir -p /tmp/a/b/c/d/e
+>|/tmp/a/b/c/d/e/f
+ln -snf /tmp/a/b/c /tmp/a/b/c1
+assert [ $(try_realpath_physical /tmp/a/b/c1/d/e) = /tmp/a/b/c/d/e ]
+assert [ $(try_realpath_physical /tmp/a/b/c1/d/e/f) = /tmp/a/b/c/d/e/f ]
+assert [ $(try_realpath_physical /tmp/a/b/c1/d/e/non) = /tmp/a/b/c/d/e/non ]
+mkdir -p /tmp/x/y
+ln -snf /tmp/a/b/c/d/e /tmp/x/y/z
+assert [ $(try_realpath_physical /tmp/x/y/z) = /tmp/a/b/c/d/e ]
+assert [ $(try_realpath_physical /tmp/x/y/z/f) = /tmp/a/b/c/d/e/f ]
+assert [ $(try_realpath_physical /tmp/x/y/z/non) = /tmp/a/b/c/d/e/non ]
+chmod a-x /tmp/x/y
+assert ! try_realpath_physical /tmp/x/y/z
+assert ! try_realpath_physical /tmp/x/y/z/f
+chmod a-x /tmp/x
+assert ! try_realpath_physical /tmp/x/y/z
+assert ! try_realpath_physical /tmp/x/y/z/f
+
+chmod -R a+x /tmp/a
+chmod -R a+x /tmp/x
+rm -rf /tmp/a || exit $?
+rm -rf /tmp/x || exit $?

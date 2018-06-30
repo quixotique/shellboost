@@ -81,12 +81,17 @@ path_simplify() {
 }
 
 try_realpath_physical() {
-   if [ -x /usr/bin/realpath ]; then
-      /usr/bin/realpath --physical "$1"
-   else
-      # TODO: attempt realpath(1) in shell using cd -P and/or pwd -P
-      path_simplify "$1"
-   fi
+   if [ -x /usr/bin/realpath ] && /usr/bin/realpath --physical "$1" 2>/dev/null; then
+      :
+   else (
+      if cd -P "$1" 2>/dev/null; then
+         echo "$PWD"
+      elif [ "${1%/*}" != "$1" -a ! -d "$1" -a ! -L "$1" ] && cd -P "${1%/*}" 2>/dev/null; then
+         printf '%s\n' "$(path_addsep "$PWD")${1##*/}"
+      else
+         return 1
+      fi
+   ) fi
 }
 
 relpath() {
