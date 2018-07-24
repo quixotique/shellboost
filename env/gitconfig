@@ -2,6 +2,7 @@
 	excludesfile = ~/.gitexclude
 	notesRef = refs/notes/hg
 	editor = vi-nofork
+	quotepath = false
 
 [user]
 	name = Andrew Bettison
