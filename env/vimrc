@@ -172,6 +172,10 @@ set softtabstop=4
 set shiftwidth=4
 set expandtab
 
+" Format numbered lists in block comments
+set formatoptions+=n
+let &formatlistpat='^\((\?\d\+)\|\[\?\d\+]\|{\?\d\+}\|\d\+[.:]\|[-*]\)\s\+'
+
 " Stop the netrw.vim plugin writing a .netrwhist file into plugin directories that
 " pathogen adds to 'runtimepath'
 let g:netrw_home = expand('~/.vim')
