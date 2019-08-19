@@ -91,5 +91,5 @@ export ABO_HOME="$HOME/ABO"
 # Burnside Youth Concert Band.
 __shellboost_include libsh/searchpath.sh
 export BYCB_HOME=$HOME/Vault/Australia/BYCB
-searchpath_prepend GROFF_TMAC_PATH "$BYCB_HOME/tmac"
+searchpath_prepend GROFF_TMAC_PATH "$BYCB_HOME/accounts/tmac"
 export GROFF_TMAC_PATH
