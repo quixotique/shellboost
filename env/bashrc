@@ -11,7 +11,11 @@ case $- in *i*);; *) return;; esac
 
 if [ ! -f "$SHELLBOOST/libsh/include.sh" -a -r "$HOME/etc/shellboost/libsh/include.sh" ]; then
    export SHELLBOOST="$HOME/etc/shellboost"
+fi
+if [ -f "$SHELLBOOST/libsh/include.sh" ]; then
    . "$SHELLBOOST/libsh/include.sh"
+else
+    echo "Warning: missing \$SHELLBOOST directory: $SHELLBOOST" >&2
 fi
 
 # Source global definitions
