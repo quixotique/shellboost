@@ -58,5 +58,6 @@ install etc/shellboost/env/hgrc           .hgrc
 install etc/shellboost/env/profile        .profile
 install etc/shellboost/env/setpath        .setpath
 install etc/shellboost/env/xsessionrc     .xsessionrc
+install etc/shellboost/env/XCompose       .XCompose
 install etc/shellboost/env/vimrc          .vimrc
 install etc/shellboost/env/openbox_rc.xml .config/openbox/rc.xml

@@ -1,0 +1,5 @@
+include "%L"   # import the default Compose file for your locale
+<Multi_key> <a> <underscore> : "ª" ordfeminine
+<Multi_key> <underscore> <a> : "ª" ordfeminine
+<Multi_key> <o> <underscore> : "º" masculine
+<Multi_key> <underscore> <o> : "º" masculine

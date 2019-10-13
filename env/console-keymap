@@ -1,0 +1,4 @@
+compose 'a' '_' to ordfeminine
+compose '_' 'a' to ordfeminine
+compose 'o' '_' to masculine
+compose '_' 'o' to masculine

@@ -35,6 +35,11 @@ export NO_AT_BRIDGE=1
 # X windows key repeat.
 [ -n "$DISPLAY" ] && xset r rate 330 80
 
+# Compose key sequences for console.
+if [ -z "$DISPLAY" -a -x /bin/loadkeys ]; then
+    /bin/loadkeys "$SHELLBOOST/env/console-keymap"
+fi
+
 # General application settings.
 export EDITOR=vi
 [ -x "$SHELLBOOST/bin/vi-nofork" ] && export EDITOR="$SHELLBOOST/bin/vi-nofork"
