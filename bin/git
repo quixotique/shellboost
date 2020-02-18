@@ -17,21 +17,14 @@ fi
 __shellboost_include libsh/devprofile.bash || exit $?
 __shellboost_include libsh/searchpath.sh || exit $?
 
-executable_not_self() {
-   test -x "$1" -a ! \( "$0" -ef "$1" \)
-}
-
-if ! GIT=$(searchpath_find "$PATH" git executable_not_self); then
-   echo "${0##*/}: not found: git" >&2
-   exit 1
-fi
+GIT="$(searchpath_chain)"
 
 opt_help=false
 gitoptions=()
 while [[ $# -gt 0 ]]; do
    case "$1" in
    --help) opt_help=true; break;;
-   -C|-c) gitoptions+=("$1" "$2"); shift 2;;
+   -C|-c|--exec-path|--git-dir|--work-tree|--namespace|--super-prefix|--list-cmds) gitoptions+=("$1" "$2"); shift 2;;
    -*) gitoptions+=("$1"); shift 1;;
    *) break;;
    esac
