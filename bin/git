@@ -1,12 +1,22 @@
 #!/bin/bash
 
-# Git wrapper that invokes git with the GIT_AUTHOR_NAME and GIT_COMMITTER_NAME
-# environment variables taken from the .gitconfig file in the devconfig
-# directory that contains the git repository.  So for example, if $HOME/project
-# is a devprofile directory, invoking git on $HOME/project/repo would receive
-# the user.email and user.name settings from $HOME/project/.gitconfig.  This
-# allows for different Git authors per profile, provided that this wrapper
-# script is the first 'git' command in the user's $PATH.
+# Git wrapper that must be the first 'git' command found in the user's $PATH.
+# Invokes the next 'git' executable in the $PATH, with the following changes:
+#
+# - Sets the GIT_AUTHOR_NAME and GIT_COMMITTER_NAME environment variables from
+#   the .gitconfig file in the devconfig directory that contains the git
+#   repository.
+#
+#   For example, if $HOME/project is a devprofile directory, invoking git on
+#   $HOME/project/repo would receive the user.email and user.name settings from
+#   $HOME/project/.gitconfig.  This allows for different Git authors per
+#   profile
+#
+# - Inserts the options --git-dir=DIR/.git --work-tree=DIR if a symbolic link
+#   .git-repo => DIR is found in the current working directory or any parent
+#   directory.  (Does not insert -C DIR because that produces the wrong output
+#   from `git rev-parse --git-dir`.)
+#
 
 # Bootstrap shellboost.
 if [ ! -f "$SHELLBOOST/libsh/include.sh" -a -r "${0%/bin/*}/libsh/include.sh" ]; then
@@ -16,6 +26,7 @@ fi
 . "$SHELLBOOST/libsh/include.sh" || exit $?
 __shellboost_include libsh/devprofile.bash || exit $?
 __shellboost_include libsh/searchpath.sh || exit $?
+__shellboost_include libsh/cd.sh || exit $?
 
 GIT="$(searchpath_chain)"
 
@@ -30,11 +41,23 @@ while [[ $# -gt 0 ]]; do
    esac
 done
 
+git_repo_options=()
+if  git_repo_symlink="$(cd_up_until [ -L .git-repo ] && echo "$PWD/.git-repo")" &&
+    ! (cd_up_until [ . -ef "$git_repo_symlink" ])
+then
+   git_repo_options+=(--git-dir "$git_repo_symlink/.git" --work-tree "$git_repo_symlink")
+fi
+
+# Put the -C .git-repo option ahead of caller-supplied options, so that if the
+# caller gives -C or --git-dir or --work-tree options, they will override the
+# .git-repo directory.
+GIT_COMMAND=("$GIT" "${git_repo_options[@]}" "${gitoptions[@]}")
+
 if ! $opt_help; then
 
    # Find the root directory of the repo being used by the command.
 
-   repo_root="$("$GIT" "${gitoptions[@]}" rev-parse --show-toplevel 2>/dev/null)"
+   repo_root="$("${GIT_COMMAND[@]}" rev-parse --show-toplevel 2>/dev/null)"
 
    # Use the user.name and user.email settings from the DEVPROFILE's .gitconfig
    # file if it exists, but only if the Git repo itself does not configure its own
@@ -44,14 +67,14 @@ if ! $opt_help; then
       devprofile=$(echo_devprofile_that_contains_path "$repo_root") &&
       [[ -r "$HOME/$devprofile/.gitconfig" ]]
    then
-      if name=$("$GIT" "${gitoptions[@]}" config --file "$HOME/$devprofile/.gitconfig" --get user.name) &&
-         ! "$GIT" "${gitoptions[@]}" config --local --get user.name >/dev/null
+      if name=$("${GIT_COMMAND[@]}" config --file "$HOME/$devprofile/.gitconfig" --get user.name) &&
+         ! "${GIT_COMMAND[@]}" config --local --get user.name >/dev/null
       then
          export GIT_AUTHOR_NAME="$name"
          export GIT_COMMITTER_NAME="$name"
       fi
-      if email=$("$GIT" "${gitoptions[@]}" config --file "$HOME/$devprofile/.gitconfig" --get user.email) &&
-         ! "$GIT" "${gitoptions[@]}" config --local --get user.email >/dev/null
+      if email=$("${GIT_COMMAND[@]}" config --file "$HOME/$devprofile/.gitconfig" --get user.email) &&
+         ! "${GIT_COMMAND[@]}" config --local --get user.email >/dev/null
       then
          export GIT_AUTHOR_EMAIL="$email"
          export GIT_COMMITTER_EMAIL="$email"
@@ -60,4 +83,4 @@ if ! $opt_help; then
 
 fi
 
-exec "$GIT" "${gitoptions[@]}" "$@"
+exec "${GIT_COMMAND[@]}" "$@"
