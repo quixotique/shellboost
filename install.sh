@@ -50,14 +50,15 @@ install() {
 }
 
 cd "${HOME?}"
-install etc/shellboost/env/bash_profile   .bash_profile
-install etc/shellboost/env/bashrc         .bashrc
-install etc/shellboost/env/gitconfig      .gitconfig
-install etc/shellboost/env/gitexclude     .gitexclude
-install etc/shellboost/env/hgrc           .hgrc
-install etc/shellboost/env/profile        .profile
-install etc/shellboost/env/setpath        .setpath
-install etc/shellboost/env/xsessionrc     .xsessionrc
-install etc/shellboost/env/XCompose       .XCompose
-install etc/shellboost/env/vimrc          .vimrc
-install etc/shellboost/env/openbox_rc.xml .config/openbox/rc.xml
+install etc/shellboost/env/bash_profile         .bash_profile
+install etc/shellboost/env/bashrc               .bashrc
+install etc/shellboost/env/gitconfig            .gitconfig
+install etc/shellboost/env/gitexclude           .gitexclude
+install etc/shellboost/env/hgrc                 .hgrc
+install etc/shellboost/env/profile              .profile
+install etc/shellboost/env/setpath              .setpath
+install etc/shellboost/env/xsessionrc           .xsessionrc
+install etc/shellboost/env/XCompose             .XCompose
+install etc/shellboost/env/vimrc                .vimrc
+install etc/shellboost/env/openbox_rc.xml       .config/openbox/rc.xml
+install etc/shellboost/env/openbox_environment  .config/openbox/environment
