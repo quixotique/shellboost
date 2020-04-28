@@ -132,4 +132,4 @@ complete -F complete_devprofiles p
 
 # Mail reading completion
 
-complete -C mh-folder-names mail save scan rmf
+complete -C mh-folder-names mail save scan rmf mhsort
