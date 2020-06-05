@@ -42,7 +42,8 @@ while [[ $# -gt 0 ]]; do
 done
 
 git_repo_options=()
-if  git_repo_symlink="$(cd_up_until [ -L .git-repo ] && echo "$PWD/.git-repo")" &&
+if  ! (cd_up_until [ -d .git ]) &&
+    git_repo_symlink="$(cd_up_until [ -L .git-repo ] && [ -d .git-repo ] && echo "$PWD/.git-repo")" &&
     ! (cd_up_until [ . -ef "$git_repo_symlink" ])
 then
    git_repo_options+=(--git-dir "$git_repo_symlink/.git" --work-tree "$git_repo_symlink")
