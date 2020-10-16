@@ -1,13 +1,21 @@
 #!/bin/bash
+# vim:sts=4 sw=4 et
+# Install third party software packages needed by Vim
+# Copyright 2020 Andrew Bettison
+
+source "$HOME/.bash_profile"
+__shellboost_include libsh/script.sh || exit $?
 
 usage() {
-    echo "$0 [-f|--force]"
+    echo "$0 [-f|--force] [-n|--dry-run]"
 }
 
 set -e
 
+opt_dry_run=false
 opt_force=false
-while [ $# -gt 0 ]; do
+
+while [[ $# -gt 0 ]]; do
     case "$1" in
     '-?'|-h|--help)
         usage
@@ -17,27 +25,40 @@ while [ $# -gt 0 ]; do
         opt_force=true
         shift
         ;;
+    -n|--dry-run)
+        opt_dry_run=true
+        shift
+        ;;
     -*)
-        echo "$0: unsupported option: $1" >&2
-        exit 1
+        fatal_usage "unsupported option: $1"
         ;;
     *)
         break
         ;;
     esac
 done
-if [ $# -ne 0 ]; then
-    echo "$0: spurious arguments: $*" >&2
-    exit 1
-fi
+[[ $# -eq 0 ]] || fatal_usage "spurious arguments: $*"
 
-run() {
-   echo "$@"
-   "$@"
+fetch() {
+    local dst="${1?}"
+    local url="${2?}"
+    [[ $dst = */ ]] && dst="$dst${url##*/}"
+    if $opt_force || [ ! -e $dst ]; then
+        run curl --fail --location --silent --show-error --create-dirs -o "$dst" "$url"
+    fi
 }
 
-cd "${HOME?}"
-if $opt_force || [ ! -r .vim/autoload/pathogen.vim ]; then
-   run mkdir -p .vim/autoload .vim/bundle &&
-      run curl -LSo .vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
-fi
+git_clone() {
+    local dst="${1?}"
+    local url="${2?}"
+    local stem="${url##*/}"
+    local stem="${stem%.git}"
+    [[ $dst = */ ]] && dst="$dst$stem"
+    if $opt_force || [ ! -d $dst/.git ]; then
+        [[ -d "$dst" ]] || run mkdir -p "$dst"
+        run git clone "$url" "$dst"
+    fi
+}
+
+fetch     ~/.vim/autoload/ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+git_clone ~/.vim/package/  git@github.com:quixotique/vim-delta.git

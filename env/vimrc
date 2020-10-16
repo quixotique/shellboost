@@ -180,18 +180,12 @@ let &formatlistpat='^\s*\((\?\d\+)\|\[\?\d\+]\|{\?\d\+}\|\d\+[.:]\|[-*]\)\s\+'
 " pathogen adds to 'runtimepath'
 let g:netrw_home = expand('~/.vim')
 
-" Load all plugins managed by Pathogen
-exe pathogen#infect()
-
-" Git/Mercurial diff plugin
-set runtimepath^=~/src/vim-delta
-
-" Enable syntax highlighting (recommended by Pathogen)
+" Enable syntax highlighting
 if has("syntax")
   syntax on
 endif
 
-" Enable file type indenting (recommended by Pathogen)
+" Enable file type indenting
 if has("autocmd")
  filetype plugin indent on
 endif
@@ -225,6 +219,12 @@ if exists('$VIMRC_SWITCH') && filereadable($VIMRC_SWITCH)
   source $VIMRC_SWITCH
   finish
 endif
+
+" Load all plugins managed by vim-plug
+call plug#begin()
+Plug '~/.vim/package/vim-delta'
+Plug 'junegunn/vim-easy-align'
+call plug#end()
 
 " Various behaviour preferences
 
