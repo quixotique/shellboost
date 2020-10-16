@@ -35,7 +35,7 @@ gitoptions=()
 while [[ $# -gt 0 ]]; do
    case "$1" in
    --help) opt_help=true; break;;
-   -C|-c|--exec-path|--git-dir|--work-tree|--namespace|--super-prefix|--list-cmds) gitoptions+=("$1" "$2"); shift 2;;
+   -C|-c|--git-dir|--work-tree|--namespace|--super-prefix|--list-cmds) gitoptions+=("$1" "$2"); shift 2;;
    -*) gitoptions+=("$1"); shift 1;;
    *) break;;
    esac
