@@ -28,7 +28,7 @@ __shellboost_include libsh/devprofile.bash || exit $?
 __shellboost_include libsh/searchpath.sh || exit $?
 __shellboost_include libsh/cd.sh || exit $?
 
-GIT="$(searchpath_chain)"
+GIT="$(searchpath_chain)" || exit $?
 
 opt_help=false
 gitoptions=()
