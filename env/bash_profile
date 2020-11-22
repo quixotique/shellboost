@@ -20,6 +20,16 @@ fi
 test -r "$HOME/.bashrc" && source "$HOME/.bashrc"
 test -r "$HOME/.profile" && source "$HOME/.profile"
 
+# Enable Git prompt and command completion in interactive shells
+if ! shopt -oq posix; then
+    if [ -d /etc/bash_completion.d ]; then
+        for __bash_script in /etc/bash_completion.d/*; do
+            source "$__bash_script"
+        done
+        unset __bash_script
+    fi
+fi
+
 # Source current development profile, if there is one.
 case $(builtin type -t init_devprofile) in
 function)
