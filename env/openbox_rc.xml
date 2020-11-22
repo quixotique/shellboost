@@ -259,24 +259,36 @@
       </action>
     </keybind>
     <!-- Keybindings for window switching -->
-    <keybind key="W-Tab">
+    <keybind key="A-Tab">
       <action name="NextWindow">
         <dialog>no</dialog>
         <bar>yes</bar>
         <raise>yes</raise>
+        <allDesktops>no</allDesktops>
       </action>
     </keybind>
-    <keybind key="S-W-Tab">
+    <keybind key="S-A-Tab">
       <action name="PreviousWindow">
         <dialog>no</dialog>
         <bar>yes</bar>
         <raise>yes</raise>
+        <allDesktops>no</allDesktops>
       </action>
     </keybind>
-    <keybind key="C-W-Tab">
+    <keybind key="W-Tab">
       <action name="NextWindow">
-        <panels>yes</panels>
-        <desktop>yes</desktop>
+        <dialog>icons</dialog>
+        <bar>yes</bar>
+        <raise>yes</raise>
+        <allDesktops>yes</allDesktops>
+      </action>
+    </keybind>
+    <keybind key="S-W-Tab">
+      <action name="PreviousWindow">
+        <dialog>icons</dialog>
+        <bar>yes</bar>
+        <raise>yes</raise>
+        <allDesktops>yes</allDesktops>
       </action>
     </keybind>
     <!-- Keybindings for windows -->
