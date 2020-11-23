@@ -35,13 +35,17 @@ run() {
     fi
 }
 
-fatal() {
+error() {
     echo "${0##*/}: $1" >&102
+}
+
+fatal() {
+    error "$1"
     exit 1
 }
 
 fatal_usage() {
-    echo "${0##*/}: $1" >&102
+    error "$1"
     usage >&102
     exit 1
 }
