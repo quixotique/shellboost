@@ -8,6 +8,7 @@ $HOME/bin:\
 ${SHELLBOOST:+$SHELLBOOST/bin:}\
 $HOME/.local/bin:\
 $HOME/ABO/bin:\
+$HOME/bin2:\
 /usr/local/sbin:\
 /sbin:\
 /usr/sbin:\
