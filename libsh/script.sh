@@ -1,4 +1,4 @@
-# Bash functions for common scripting idioms
+# Shell functions for common scripting idioms
 # vim:sts=4 sw=4 ts=8 et
 # Copyright 2020 Andrew Bettison
 #
@@ -21,6 +21,17 @@
 # that redirects or quashes stdout/stderr, eg: 'run cd /foo/bar >/dev/null'
 
 exec 101>&1 102>&2
+
+ensure_in_path() {
+    local file
+    for file; do
+        case $(type "$file" 2>/dev/null) in
+        "$file is /"*) ;;
+        *) fatal "not found: $file";;
+        esac
+    done
+    return 0
+}
 
 log() {
     echo "$@" >&101
