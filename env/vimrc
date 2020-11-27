@@ -224,6 +224,7 @@ endif
 call plug#begin()
 Plug '~/.vim/package/vim-delta'
 Plug 'junegunn/vim-easy-align'
+Plug 'sophacles/vim-bundle-mako'
 call plug#end()
 
 " Various behaviour preferences
