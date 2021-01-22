@@ -1,5 +1,7 @@
 tags
 cscope.out
 .*.sw?
+.exrc
 core
+core.*
 a.out
