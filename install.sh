@@ -47,6 +47,9 @@ install() {
         echo "link $dst  ->  $src"
         ln -s -f "$src" "$dst"
     fi
+    if [ ! "$dst" -ef "$src" ]; then
+        echo "not linked: $src -> $dst"
+    fi
 }
 
 cd "${HOME?}"
