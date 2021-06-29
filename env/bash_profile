@@ -22,7 +22,9 @@ test -r "$HOME/.profile" && source "$HOME/.profile"
 
 # Enable Git prompt and command completion in interactive shells
 if ! shopt -oq posix; then
-    if [ -d /etc/bash_completion.d ]; then
+    if [ -r /etc/bash_completion ]; then
+        source /etc/bash_completion
+    elif [ -d /etc/bash_completion.d ]; then
         for __bash_script in /etc/bash_completion.d/*; do
             source "$__bash_script"
         done
