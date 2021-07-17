@@ -37,10 +37,13 @@ log() {
     echo "$@" >&101
 }
 
+opt_verbose=true
 opt_dry_run=false
 
 run() {
-    { echo -n +; printf ' %q' "$@"; echo; } >&101
+    if $opt_verbose; then
+        { echo -n +; printf ' %q' "$@"; echo; } >&101
+    fi
     if ! ${opt_dry_run:-false}; then
         "$@"
     fi
