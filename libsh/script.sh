@@ -45,7 +45,7 @@ run() {
         { echo -n +; printf ' %q' "$@"; echo; } >&101
     fi
     if ! ${opt_dry_run:-false}; then
-        "$@"
+        "$@" 101>&- 102>&-
     fi
 }
 
