@@ -1,7 +1,7 @@
 # .setpath
 # vim:sts=4 sw=4 et
-# Set the $PATH environment variable on Debian or Ubuntu Linux systems
-# Sourced from .profile or .bash_profile
+# Set the $PATH and $MANPATH environment variables on Debian or Ubuntu Linux
+# systems Sourced from .profile or .bash_profile
 
 PATH="\
 $HOME/bin:\
@@ -17,4 +17,9 @@ $HOME/bin2:\
 /bin:\
 /usr/bin:\
 /usr/bin/mh\
+"
+
+export MANPATH="\
+$HOME/man:\
+$HOME/man2:\
 "
