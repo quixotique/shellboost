@@ -23,9 +23,10 @@
 	default = simple
 
 [diff]
-        submodule = log
-        renames = copy
-        renameLimit = 1000
+	algorithm = histogram
+	submodule = log
+	renames = copy
+	renameLimit = 1000
 
 [gui]
 	fontui = -family \"DejaVu Sans\" -size 10 -weight normal -slant roman -underline 0 -overstrike 0
