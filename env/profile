@@ -8,20 +8,14 @@
 # Bash and Dash.  The Dash 'type' command does not support the '-t' option, so
 # it prints "-t: not found\n__shellboost_include is a shell function", whereas
 # Bash just prints "function".
-case $(type -t __shellboost_include 2>/dev/null) in
-*function)
-    ;;
-*)
-    if [ ! -f "$SHELLBOOST/libsh/include.sh" -a -f "$HOME/etc/shellboost/libsh/include.sh" ]; then
-        export SHELLBOOST="$HOME/etc/shellboost"
-    fi
-    if [ -r "$SHELLBOOST/libsh/include.sh" ]; then
-        . "$SHELLBOOST/libsh/include.sh"
-    else
-        __shellboost_include() { echo "Failure: __shellboost_include $1" >&2; return 1; }
-    fi
-    ;;
-esac
+if [ ! -f "$SHELLBOOST/libsh/include.sh" -a -f "$HOME/etc/shellboost/libsh/include.sh" ]; then
+    export SHELLBOOST="$HOME/etc/shellboost"
+fi
+if [ -r "$SHELLBOOST/libsh/include.sh" ]; then
+    . "$SHELLBOOST/libsh/include.sh"
+else
+    __shellboost_include() { echo "Failure: __shellboost_include $1" >&2; return 1; }
+fi
 
 # Set $PATH.
 [ -r "$HOME/.setpath" ] && . "$HOME/.setpath"
