@@ -65,3 +65,4 @@ install etc/shellboost/env/XCompose             .XCompose
 install etc/shellboost/env/vimrc                .vimrc
 install etc/shellboost/env/openbox_rc.xml       .config/openbox/rc.xml
 install etc/shellboost/env/openbox_environment  .config/openbox/environment
+install etc/shellboost/env/tmate.conf           .tmate.conf
