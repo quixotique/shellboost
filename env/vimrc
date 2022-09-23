@@ -239,6 +239,9 @@ set modelines=5
 
 " Various file type preferences
 
+let g:cargo_makeprg_params = 'build'
+let g:rustfmt_autosave = 1
+
 augroup filetype
   " Quixote PTL
   au BufRead *.ptl		set filetype=python
