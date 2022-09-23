@@ -49,6 +49,10 @@ run() {
     fi
 }
 
+runf() {
+   opt_dry_run=false run "$@"
+}
+
 error() {
     echo "${0##*/}: $1" >&102
 }
