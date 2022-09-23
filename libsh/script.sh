@@ -22,6 +22,11 @@
 
 exec 101>&1 102>&2
 
+type __shellboost_include 1>/dev/null 2>&1 || . "$SHELLBOOST/libsh/include.sh"
+__shellboost_include libsh/path.sh
+
+here="$(abspath "$(dirpath "$0")")"
+
 ensure_in_path() {
     local file
     for file; do

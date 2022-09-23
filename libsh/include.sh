@@ -29,3 +29,5 @@ __include() {
 __shellboost_include() {
     __include "${SHELLBOOST?}/${1?missing arg}" "__shellboost_included__$1"
 }
+
+__shellboost_included__libsh__include__sh=true
