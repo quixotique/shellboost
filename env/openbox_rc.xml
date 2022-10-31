@@ -190,20 +190,6 @@
         <wrap>no</wrap>
       </action>
     </keybind>
-    <keybind key="W-Up">
-      <action name="GoToDesktop">
-        <to>up</to>
-        <dialog>no</dialog>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="W-Down">
-      <action name="GoToDesktop">
-        <to>down</to>
-        <dialog>no</dialog>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
     <keybind key="W-1">
       <action name="Desktop">
         <desktop>1</desktop>
@@ -348,6 +334,12 @@
       <action name="ResizeRelative">
         <right>-55</right>
       </action>
+    </keybind>
+    <keybind key="W-Up">
+      <action name="Maximize"/>
+    </keybind>
+    <keybind key="W-Down">
+      <action name="Unmaximize"/>
     </keybind>
     <keybind key="W-Prior">
       <action name="ResizeRelative">
@@ -498,16 +490,6 @@
         <action name="FocusToBottom"/>
         <action name="Unfocus"/>
       </mousebind>
-      <mousebind button="W-Up" action="Click">
-        <action name="GoToDesktop">
-          <to>previous</to>
-        </action>
-      </mousebind>
-      <mousebind button="W-Down" action="Click">
-        <action name="GoToDesktop">
-          <to>next</to>
-        </action>
-      </mousebind>
       <mousebind button="C-W-Up" action="Click">
         <action name="GoToDesktop">
           <to>previous</to>
@@ -518,12 +500,12 @@
           <to>next</to>
         </action>
       </mousebind>
-      <mousebind button="W-S-Up" action="Click">
+      <mousebind button="S-W-Up" action="Click">
         <action name="SendToDesktop">
           <to>previous</to>
         </action>
       </mousebind>
-      <mousebind button="W-S-Down" action="Click">
+      <mousebind button="S-W-Down" action="Click">
         <action name="SendToDesktop">
           <to>next</to>
         </action>
