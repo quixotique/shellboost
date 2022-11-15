@@ -47,7 +47,8 @@ opt_dry_run=false
 
 run() {
     if $opt_verbose; then
-        { echo -n +; printf ' %q' "$@"; echo; } >&101
+        local msg="$(printf ' %q' "$@")"
+        echo "+$msg" >&101
     fi
     if ! ${opt_dry_run:-false}; then
         "$@" 101>&- 102>&-
