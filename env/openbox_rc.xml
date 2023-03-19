@@ -875,5 +875,8 @@
 
   # end of the example
 -->
+    <application class="Gvim" title="Vim" type="normal">
+      <maximized>Vertical</maximized>
+    </application>
   </applications>
 </openbox_config>
