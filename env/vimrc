@@ -119,42 +119,6 @@ function g:Grepword(text)
   lrewind
 endfunc
 
-" Set up cscope the way we use it
-if has("cscope") && executable("cscope") && $CSCOPE_DB != ""
-  cscope add $CSCOPE_DB
-  set cscopeverbose  	" Show message when any other cscope db added
-  set cscoperelative	" Cscope.out filenames are relative to cscope.out
-  set cscopetag		" Tag jump commands include cscope search
-  set csto=0		" Look up cscope before ctags
-  " Cscope mappings:
-  "   s   "symbol"	find all references to the token under cursor
-  "   g   "global"	find global definition(s) of the token under cursor
-  "   c   "calls"	find all calls to the function name under cursor
-  "   t   "text"	find all instances of the text under cursor
-  "   e   "egrep"	egrep search for the word under cursor
-  "   f   "file"	open the filename under cursor
-  "   i   "includes"	find files that include the filename under cursor
-  "   d   "called"	find functions that function under cursor calls
-  " To open in new tab:
-  nmap <Leader>_s :tab cscope find s <C-R>=expand("<cword>")<CR><CR>	
-  nmap <Leader>_g :tab cscope find g <C-R>=expand("<cword>")<CR><CR>	
-  nmap <Leader>_c :tab cscope find c <C-R>=expand("<cword>")<CR><CR>	
-  nmap <Leader>_t :tab cscope find t <C-R>=expand("<cword>")<CR><CR>	
-  nmap <Leader>_e :tab cscope find e <C-R>=expand("<cword>")<CR><CR>	
-  nmap <Leader>_f :tab cscope find f <C-R>=expand("<cfile>")<CR><CR>	
-  nmap <Leader>_i :tab cscope find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-  nmap <Leader>_d :tab cscope find d <C-R>=expand("<cword>")<CR><CR>	
-  " To jump in current window:
-  nmap <LocalLeader>_s :cscope find s <C-R>=expand("<cword>")<CR><CR>	
-  nmap <LocalLeader>_g :cscope find g <C-R>=expand("<cword>")<CR><CR>	
-  nmap <LocalLeader>_c :cscope find c <C-R>=expand("<cword>")<CR><CR>	
-  nmap <LocalLeader>_t :cscope find t <C-R>=expand("<cword>")<CR><CR>	
-  nmap <LocalLeader>_e :cscope find e <C-R>=expand("<cword>")<CR><CR>	
-  nmap <LocalLeader>_f :cscope find f <C-R>=expand("<cfile>")<CR><CR>	
-  nmap <LocalLeader>_i :cscope find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-  nmap <LocalLeader>_d :cscope find d <C-R>=expand("<cword>")<CR><CR>	
-endif
-
 " Put swap files into hidden subdirectories, in the file's own directory only
 " as a last resort.
 set directory=./.vimtmp,~/.vimtmp//,/var/tmp//,/tmp//,.
