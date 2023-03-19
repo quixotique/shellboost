@@ -60,6 +60,7 @@ set suffixes=.bak,.o,.a,.gz,~,.dvi,.tar,.zip
 
 " Various editing preferences
 
+set autoindent
 set nostartofline       " Stay in current column when jumping
 set backspace=indent,eol,start " Can backspace over anything
 set joinspaces          " Two spaces between sentences when joining lines
