@@ -139,7 +139,7 @@ set expandtab
 
 " Format numbered lists in block comments
 set formatoptions+=n
-let &formatlistpat='^\s*\((\?\d\+)\|([A-Za-z])\|\[\?\d\+]\|{\?\d\+}\|\d\+[.:]\|[-*]\)\s\+'
+let &formatlistpat='^\s*\((\?\d\+)\|(\?[A-Za-z])\|\[\?\d\+]\|{\?\d\+}\|\d\+[.:]\|\d\d\?:\d\d\s*\W\?\|[-*]\)\s\+'
 
 " Stop the netrw.vim plugin writing a .netrwhist file into plugin directories that
 " pathogen adds to 'runtimepath'
