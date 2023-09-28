@@ -51,16 +51,6 @@ export SIX_LOCAL=SA
 export ROWS
 export COLUMNS
 
-case "$(ls --version 2>/dev/null)" in
-*GNU*)
-    export LS_OPTIONS='--color=auto'
-    [ -x /usr/bin/dircolours ] && eval "$(/usr/bin/dircolors)"
-    ;;
-*)
-    export CLICOLOR=1
-    ;;
-esac
-
 unset CVS_RSH
 unset CVSROOT
 unset GROFF_TMAC_PATH
