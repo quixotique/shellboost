@@ -60,9 +60,29 @@ unset VIMRC_SWITCH
 unset CSCOPE_DB
 __shellboost_include libsh/vim.sh
 
-# Git settings
+# Git helpers
+
+# Graphical utility that displays a visualisation of all branches.
 gk() {
-   gitk --all
+   gitk --all "$@"
+}
+
+# Print the name of the current branch.
+cb() {
+    git branch --show-current
+}
+
+# Print the name of the previous branch, that `git switch -` would check out.
+pb() {
+    git name-rev $(git rev-parse @{-1}) --name-only
+}
+
+# Print the hash of the Nth commit ago in the given log, eg, `gh 1 -- file.cpp` is the penultimate
+# commit that modified file.cpp.
+gh() {
+    local skip="${1?}"
+    shift
+    git --no-pager log --format='%H' --skip="$skip" --max-count=1 "$@"
 }
 
 # Mercurial settings
