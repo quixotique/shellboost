@@ -1,16 +1,24 @@
 #!/bin/bash
 
-# Git wrapper that must be the first 'git' command found in the user's $PATH.
-# Invokes the next 'git' executable in the $PATH, with the following changes:
+# Git wrapper that must be the first 'git' command found in the user's $PATH.  Invokes the next
+# 'git' executable in the $PATH, with the following changes:
 #
-# - Inserts the options --git-dir=DIR/.git --work-tree=DIR if a symbolic link
-#   .git-repo => DIR is found in the current working directory or any parent
-#   directory.  (Does not insert -C DIR because that produces the wrong output
-#   from `git rev-parse --git-dir`.)
+# - if the current working directory is not within a Git working copy, and neither the --git-dir=DIR
+#   nor --work-tree=DIR option was supplied, then:
+#   - searches the current working directory and parents for a symbolic link .git-repo => DIR
+#   - if found:
+#     - if DIR is a non-bare Git repo, ie, contains a .git/config file, then inserts the options
+#       --git-dir=DIR/.git --work-tree=DIR unless the current working directory is already within
+#       DIR
+#     - otherwise, if DIR is a Git worktree, ie, contains a .git file "gitdir: <path>", then inserts
+#       the option --work-tree=DIR unless the current working directory is already within DIR
+#     - otherwise, fail with an error message
 #
+# Note: does not insert the option -C DIR because that would interfere with the output from `git
+# rev-parse --git-dir`.
 
 # Bootstrap shellboost.
-if [ ! -f "$SHELLBOOST/libsh/include.sh" -a -r "${0%/bin/*}/libsh/include.sh" ]; then
+if [[ ! -f $SHELLBOOST/libsh/include.sh && -r ${0%/bin/*}/libsh/include.sh ]]; then
    export SHELLBOOST="${0%/bin/*}"
 fi
 
@@ -21,27 +29,49 @@ __shellboost_include libsh/cd.sh || exit $?
 GIT="$(searchpath_chain)" || exit $?
 
 opt_help=false
+git_dir_known=false
 gitoptions=()
 while [[ $# -gt 0 ]]; do
    case "$1" in
    -h|--help) opt_help=true; break;;
-   -C|-c|--git-dir|--work-tree|--namespace|--super-prefix|--list-cmds) gitoptions+=("$1" "$2"); shift 2;;
+   -C|-c|--namespace|--super-prefix|--list-cmds) gitoptions+=("$1" "$2"); shift 2;;
+   --git-dir|--work-tree) gitoptions+=("$1" "$2"); git_dir_known=true; shift 2;;
    -*) gitoptions+=("$1"); shift 1;;
    *) break;;
    esac
 done
 
-git_repo_options=()
-if  ! (cd_up_until [ -d .git ]) &&
-    git_repo_symlink="$(cd_up_until [ -L .git-repo ] && [ -d .git-repo ] && echo "$PWD/.git-repo")" &&
-    ! (cd_up_until [ . -ef "$git_repo_symlink" ])
-then
-   git_repo_options+=(--git-dir "$git_repo_symlink/.git" --work-tree "$git_repo_symlink")
+is_git_repo() {
+    [[ -f ${1?}/.git/config ]]
+}
+
+is_git_worktree() {
+    [[ $(cat ${1?}/.git 2>/dev/null) = gitdir:* ]]
+}
+
+is_git_repo_or_worktree() {
+    is_git_repo "$@" || is_git_worktree "$@"
+}
+
+if ! $git_dir_known && (cd_up_until is_git_repo_or_worktree .); then
+    git_dir_known=true
 fi
 
-# Put the -C .git-repo option ahead of caller-supplied options, so that if the
-# caller gives -C or --git-dir or --work-tree options, they will override the
-# .git-repo directory.
+git_repo_options=()
+if  ! $git_dir_known &&
+    git_repo_symlink="$(cd_up_until [ -L .git-repo ] && [[ -d .git-repo ]] && echo "$PWD/.git-repo")" &&
+    ! (cd_up_until [ . -ef "$git_repo_symlink" ])
+then
+    if is_git_repo "$git_repo_symlink"; then
+        git_repo_options+=(--git-dir "$git_repo_symlink/.git" --work-tree "$git_repo_symlink")
+    elif is_git_worktree "$git_repo_symlink"; then
+        git_repo_options+=(--work-tree "$git_repo_symlink")
+    else
+        echo "$0: not a Git worktree or repo: $git_repo_symlink -> $(readlink -f "$git_repo_symlink")" >&2
+        exit 1
+    fi
+fi
+
 GIT_COMMAND=("$GIT" "${git_repo_options[@]}" "${gitoptions[@]}")
 
 # The 'git submodule' command does not observe the --work-tree option.  Change directory to achieve
