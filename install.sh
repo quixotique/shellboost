@@ -3,10 +3,17 @@
 set -e
 
 # Bootstrap shellboost.
-. "${0%${0##*/}}libsh/script.sh" || exit $?
-SHELLBOOST="$here"
+if [[ ! -f $SHELLBOOST/libsh/include.sh && -r ${0%/*}/libsh/include.sh ]]; then
+   export SHELLBOOST="${0%/*}"
+fi
+
 . "$SHELLBOOST/libsh/include.sh" || exit $?
+__shellboost_include libsh/script.sh || exit $?
 __shellboost_include libsh/install.sh || exit $?
+
+if [ "$SHELLBOOST" != "$here" ]; then
+    runf export SHELLBOOST="$here"
+fi
 
 parse_command_line "$@"
 

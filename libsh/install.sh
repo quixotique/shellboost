@@ -44,9 +44,12 @@ link() {
     local linked=false
     [ -e "$src" ]
     if $opt_force || [ ! -e "$dst" ]; then
+        case "$src" in
+        /*) ;;
+        *) src="$HOME/$src";;
+        esac
         local dir="${dst%/*}"
         if [ "$dir" != "$dst" ]; then
-            src="$HOME/$src"
             if [ ! -d "$dir" ]; then
                 run mkdir -p "$dir"
             fi
