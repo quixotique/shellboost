@@ -3,7 +3,9 @@
 # Copyright 2018 Andrew Bettison
 
 # vi(1) wrapper that invokes a preferred vi-like editor:
+# - nvim-qt(1) if present and $DISPLAY is set, otherwise
 # - gvim(1) if present and $DISPLAY is set, otherwise
+# - nvim(1) if present, otherwise
 # - vim(1) if present, otherwise
 # - vi(1) if present
 #
@@ -25,10 +27,19 @@ esac
 found=
 
 if [ -n "$DISPLAY" ]; then
+    if found=$(searchpath_find "$PATH" nvim-qt executable_not_self); then
+       exec "$found" $nofork_opt -- "$@"
+       echo "cannot execute $found" >&2
+    fi
     if found=$(searchpath_find "$PATH" gvim executable_not_self); then
        exec "$found" $nofork_opt "$@"
        echo "cannot execute $found" >&2
     fi
+fi
+
+if found=$(searchpath_find "$PATH" nvim executable_not_self); then
+   exec "$found" $nofork_opt "$@"
+   echo "cannot execute $found" >&2
 fi
 
 if found=$(searchpath_find "$PATH" vim executable_not_self); then
@@ -45,5 +56,5 @@ if found=$(searchpath_find "$PATH" vi executable_not_self); then
     exit 1
 fi
 
-[ -n "$found" ] || echo "not found: gvim or vim or vi" >&2
+[ -n "$found" ] || echo "not found: nvim-qt or gvim or nvim or vim or vi" >&2
 exit 1

@@ -27,7 +27,8 @@ link "$SHELLBOOST/env/profile"              .profile
 link "$SHELLBOOST/env/setpath"              .setpath
 link "$SHELLBOOST/env/xsessionrc"           .xsessionrc
 link "$SHELLBOOST/env/XCompose"             .XCompose
-link "$SHELLBOOST/env/vimrc"                .vimrc
+link "$SHELLBOOST/env/init.vim"             .config/nvim/init.vim
+link "$SHELLBOOST/env/init.vim"             .vimrc
 link "$SHELLBOOST/env/openbox_rc.xml"       .config/openbox/rc.xml
 link "$SHELLBOOST/env/openbox_environment"  .config/openbox/environment
 link "$SHELLBOOST/env/tmate.conf"           .tmate.conf
