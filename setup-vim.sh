@@ -39,6 +39,12 @@ while [[ $# -gt 0 ]]; do
 done
 [[ $# -eq 0 ]] || fatal_usage "spurious arguments: $*"
 
+link() {
+    local src="${1?}"
+    local dst="${2?}"
+    [[ $src -ef $dst ]] || run ln -snrf "$src" "$dst"
+}
+
 fetch() {
     local dst="${1?}"
     local url="${2?}"
@@ -55,10 +61,21 @@ git_clone() {
     local stem="${stem%.git}"
     [[ $dst = */ ]] && dst="$dst$stem"
     if $opt_force || [ ! -d $dst/.git ]; then
-        [[ -d "$dst" ]] || run mkdir -p "$dst"
+        [[ -e $dst ]] && rm -rf "$dst"
+        run mkdir -p "$dst"
         run git clone "$url" "$dst"
     fi
 }
 
-fetch     ~/.vim/autoload/ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-git_clone ~/.vim/package/  git@github.com:quixotique/vim-delta.git
+if [[ ! $(fc-list Inconsolata) ]]; then
+    run sudo apt update
+    run sudo apt install fonts-inconsolata
+fi
+
+# For Neovim
+fetch     ~/.local/share/nvim/site/autoload/ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+git_clone ~/.local/share/nvim/site/package/  git@github.com:quixotique/vim-delta.git
+
+# For Vim
+link ~/.local/share/nvim/site/autoload/plug.vim  ~/.vim/autoload/plug.vim
+link ~/.local/share/nvim/site/package/vim-delta  ~/.vim/package/vim-delta
