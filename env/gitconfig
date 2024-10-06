@@ -39,3 +39,4 @@
 
 [include]
 	path = ~/etc/devprofile/.gitconfig
+	path = ~/.gitconfig.local
