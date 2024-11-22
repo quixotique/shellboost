@@ -32,14 +32,19 @@ opt_help=false
 git_dir_known=false
 gitoptions=()
 while [[ $# -gt 0 ]]; do
-   case "$1" in
-   -h|--help) opt_help=true; break;;
-   -C|-c|--namespace|--super-prefix|--list-cmds) gitoptions+=("$1" "$2"); shift 2;;
-   --git-dir|--work-tree) gitoptions+=("$1" "$2"); git_dir_known=true; shift 2;;
-   -*) gitoptions+=("$1"); shift 1;;
-   *) break;;
-   esac
+    case "$1" in
+    -h|--help) opt_help=true; break;;
+    -C|-c|--namespace|--super-prefix|--list-cmds) gitoptions+=("$1" "$2"); shift 2;;
+    --git-dir|--work-tree) gitoptions+=("$1" "$2"); git_dir_known=true; shift 2;;
+    -*) gitoptions+=("$1"); shift 1;;
+    *) break;;
+    esac
 done
+
+# The 'git clone' command needs to work as long as it is not inside an actual Git repo.
+if [[ $1 == clone ]]; then
+    exec "$GIT" "${gitoptions[@]}" "$@"
+fi
 
 is_git_repo() {
     [[ -f ${1?}/.git/config ]]
@@ -77,10 +82,10 @@ GIT_COMMAND=("$GIT" "${git_repo_options[@]}" "${gitoptions[@]}")
 # The 'git submodule' command does not observe the --work-tree option.  Change directory to achieve
 # the same effect.
 if [[ $1 == submodule ]] && ! $opt_help; then
-   repo_root="$("${GIT_COMMAND[@]}" rev-parse --show-toplevel 2>/dev/null)"
-   if [[ ! $repo_root -ef . ]]; then
-       cd "$repo_root" >/dev/null || exit $?
-   fi
+    repo_root="$("${GIT_COMMAND[@]}" rev-parse --show-toplevel 2>/dev/null)"
+    if [[ ! $repo_root -ef . ]]; then
+        cd "$repo_root" >/dev/null || exit $?
+    fi
 fi
 
 exec "${GIT_COMMAND[@]}" "$@"
