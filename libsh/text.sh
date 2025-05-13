@@ -16,6 +16,29 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+# Echo args3..N with an escape character arg1 inserted before all characters in
+# the set arg2, ie, that would match the glob construction [arg2].
+escape() {
+   local esc chars escaped rest char
+   esc="${1?}"
+   chars="${2?}"
+   shift 2
+   escaped=
+   for arg; do
+      escaped="$escaped "
+      while [ -n "$arg" ]; do
+         rest="${arg#?}"
+         char="${arg%"$rest"}"
+         case $char in
+         [$chars]) escaped="$escaped$esc$char";;
+         *)        escaped="$escaped$char";;
+         esac
+         arg="$rest"
+      done
+   done
+   printf '%s\n' "${escaped# }"
+}
+
 # Turn all arguments into shell quoted strings which can safely be used as eval
 # arguments.
 quoted() {

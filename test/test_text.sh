@@ -4,6 +4,10 @@ case $0 in */*)D="${0%/*}";;*)D=.;;esac
 
 set -x
 
+assert [ "$(escape : 1-9 abc)" = abc ]
+assert [ "$(escape : 1-9 a1b2c)" = 'a:1b:2c' ]
+assert [ "$(escape \\ \''\\"!@#$%^&*() ' '"quo\tes" '\''and'\'' m#eta^*char@!s')" = '\"quo\\tes\"\ \'\''and\'\''\ m\#eta\^\*char\@\!s' ]
+
 assert [ "$(quoted a)" = a ]
 assert [ "$(quoted a b c)" = "a b c" ]
 assert [ "$(quoted '/a/b-c/d_e.f')" = '/a/b-c/d_e.f' ]
