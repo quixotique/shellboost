@@ -1,5 +1,5 @@
 # Shell functions for manipulating text
-# vim:sts=3 sw=3 ts=8 et
+# vim:sts=4 sw=4 ts=8 et
 # Copyright 2025 Andrew Bettison
 #
 # This program is free software; you can redistribute it and/or modify
@@ -55,7 +55,7 @@ rstrip() {
 # is whitespace.
 # strip arg [chars]
 strip() {
-   rstrip "$(lstrip "$1" "$2")" "$2"
+    rstrip "$(lstrip "$1" "$2")" "$2"
 }
 
 eval "$__restore_extglob"

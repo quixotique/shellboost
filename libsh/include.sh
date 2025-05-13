@@ -1,4 +1,5 @@
 # Shell functions for including script files
+# vim:sts=4 sw=4 ts=8 et
 # Copyright 2015 Andrew Bettison
 #
 # This program is free software; you can redistribute it and/or modify

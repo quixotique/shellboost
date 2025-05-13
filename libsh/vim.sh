@@ -1,5 +1,5 @@
 # Shell functions for Vim command-line completion
-# vim:sts=3 sw=3 ts=8 et
+# vim:sts=4 sw=4 ts=8 et
 # Copyright 2015 Andrew Bettison
 #
 # This program is free software; you can redistribute it and/or modify
@@ -22,11 +22,11 @@ __shellboost_include libsh/cd.sh || return $?
 
 # Redefine this function to support different development file layouts
 _tags_file() {
-   _nearest_tags_file
+    _nearest_tags_file
 }
 
 _nearest_tags_file() {
-   ( cd_up_until [ -f tags ] && echo "$PWD/tags" )
+    ( cd_up_until [ -f tags ] && echo "$PWD/tags" )
 }
 
 _vim_search_tags() {

@@ -1,5 +1,5 @@
 # Shell functions for changing current working directory
-# vim:sts=3 sw=3 ts=8 et
+# vim:sts=4 sw=4 ts=8 et
 # Copyright 2015 Andrew Bettison
 #
 # This program is free software; you can redistribute it and/or modify
@@ -17,36 +17,36 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 __run() {
-   if [ "$1" = '!' ]; then
-      shift
-      __run "$@" && return 1
-      return 0
-   fi
-   "$@"
+    if [ "$1" = '!' ]; then
+        shift
+        __run "$@" && return 1
+        return 0
+    fi
+    "$@"
 }
 
 cd_up_until() {
-   local dir
-   dir="$PWD"
-   while true; do
-      __run "$@" && return 0
-      [ "$PWD" = / ] && break
-      cd .. >/dev/null || break
-   done
-   cd "$dir" >/dev/null
-   return 1
+    local dir
+    dir="$PWD"
+    while true; do
+        __run "$@" && return 0
+        [ "$PWD" = / ] && break
+        cd .. >/dev/null || break
+    done
+    cd "$dir" >/dev/null
+    return 1
 }
 
 cd_down_until() {
-   if [ "$PWD" = / ]; then
-      __run "$@" && return 0
-   else
-      local dir
-      dir="${PWD##*/}"
-      cd .. >/dev/null
-      cd_down_until "$@" && return 0
-      __run "$@" && return 0
-      cd "$dir" >/dev/null
-   fi
-   return 1
+    if [ "$PWD" = / ]; then
+        __run "$@" && return 0
+    else
+        local dir
+        dir="${PWD##*/}"
+        cd .. >/dev/null
+        cd_down_until "$@" && return 0
+        __run "$@" && return 0
+        cd "$dir" >/dev/null
+    fi
+    return 1
 }

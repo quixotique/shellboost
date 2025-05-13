@@ -1,5 +1,5 @@
 # Shell functions for unpacking file paths
-# vim:sts=3 sw=3 ts=8 et
+# vim:sts=4 sw=4 ts=8 et
 # Copyright 2015 Andrew Bettison
 #
 # This program is free software; you can redistribute it and/or modify
@@ -19,53 +19,53 @@
 __shellboost_include libsh/text.sh || return $?
 
 path_explode_eval() {
-   local path exploded IFS
-   path="${1?}"
-   IFS=/
-   set -- $path
-   exploded=
-   if [ $# -gt 0 -a -z "$1" ]; then
-      exploded=/
-      while [ $# -gt 0 -a -z "$1" ]; do
-         shift
-      done
-   fi
-   while [ $# -gt 0 ]; do
-      exploded="$exploded${exploded:+ }$(quoted "$1")"
-      shift
-      if [ $# -gt 0 ]; then
-         exploded="$exploded /"
-         while [ $# -gt 0 -a -z "$1" ]; do
+    local path exploded IFS
+    path="${1?}"
+    IFS=/
+    set -- $path
+    exploded=
+    if [ $# -gt 0 -a -z "$1" ]; then
+        exploded=/
+        while [ $# -gt 0 -a -z "$1" ]; do
             shift
-         done
-      elif [ "${path%/}" != "$path" ]; then
-         exploded="$exploded /"
-      fi
-   done
-   echo "$exploded"
+        done
+    fi
+    while [ $# -gt 0 ]; do
+        exploded="$exploded${exploded:+ }$(quoted "$1")"
+        shift
+        if [ $# -gt 0 ]; then
+            exploded="$exploded /"
+            while [ $# -gt 0 -a -z "$1" ]; do
+                shift
+            done
+        elif [ "${path%/}" != "$path" ]; then
+            exploded="$exploded /"
+        fi
+    done
+    echo "$exploded"
 }
 
 path_explode_index() {
-   local a n IFS
-   a="$(path_explode_eval "$1")"
-   n=$(($2 + 1))
-   IFS=' '
-   eval set -- "$a"
-   [ $n -le $# ] && eval echo \$$n
+    local a n IFS
+    a="$(path_explode_eval "$1")"
+    n=$(($2 + 1))
+    IFS=' '
+    eval set -- "$a"
+    [ $n -le $# ] && eval echo \$$n
 }
 
 path_common_prefix() {
-   local path prefix newprefix n pathcomp prefixcomp
-   prefix="${1?}"
-   shift
-   for path; do
-      newprefix=
-      n=0
-      while pathcomp="$(path_explode_index "$path" $n)" && prefixcomp="$(path_explode_index "$prefix" $n)" && [ "$pathcomp" = "$prefixcomp" ]; do
-         newprefix="$newprefix$prefixcomp"
-         n=$((n+1))
-      done
-      prefix="$newprefix"
-   done
-   echo "$prefix"
+    local path prefix newprefix n pathcomp prefixcomp
+    prefix="${1?}"
+    shift
+    for path; do
+        newprefix=
+        n=0
+        while pathcomp="$(path_explode_index "$path" $n)" && prefixcomp="$(path_explode_index "$prefix" $n)" && [ "$pathcomp" = "$prefixcomp" ]; do
+            newprefix="$newprefix$prefixcomp"
+            n=$((n+1))
+        done
+        prefix="$newprefix"
+    done
+    echo "$prefix"
 }

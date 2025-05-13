@@ -1,5 +1,5 @@
 # Bash functions for unpacking file paths
-# vim:sts=3 sw=3 ts=8 et
+# vim:sts=4 sw=4 ts=8 et
 # Copyright 2015 Andrew Bettison
 #
 # This program is free software; you can redistribute it and/or modify
@@ -53,23 +53,23 @@ path_explode_index() {
 }
 
 path_common_prefix() {
-   local arg prefix argprefix n an IFS
-   path_explode_array "${1?}" prefix
-   n=${#prefix[*]}
-   shift
-   IFS=
-   for arg; do
-      path_explode_array "$arg" argprefix
-      an=${#argprefix[*]}
-      while [ $an -gt $n ]; do
-          an=$((an-1))
-          unset argprefix[$an]
-      done
-      while [ $n -gt 0 -a \( $n -gt $an -o "${prefix[*]}" != "${argprefix[*]}" \) ]; do
-          n=$((n-1))
-          unset argprefix[$n]
-          unset prefix[$n]
-      done
-   done
-   echo "${prefix[*]}"
+    local arg prefix argprefix n an IFS
+    path_explode_array "${1?}" prefix
+    n=${#prefix[*]}
+    shift
+    IFS=
+    for arg; do
+        path_explode_array "$arg" argprefix
+        an=${#argprefix[*]}
+        while [ $an -gt $n ]; do
+            an=$((an-1))
+            unset argprefix[$an]
+        done
+        while [ $n -gt 0 -a \( $n -gt $an -o "${prefix[*]}" != "${argprefix[*]}" \) ]; do
+            n=$((n-1))
+            unset argprefix[$n]
+            unset prefix[$n]
+        done
+    done
+    echo "${prefix[*]}"
 }
