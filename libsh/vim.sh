@@ -19,6 +19,7 @@
 __shellboost_include libsh/feature.sh || return $?
 __have_completion || return 0
 __shellboost_include libsh/cd.sh || return $?
+__shellboost_include libsh/text.sh || return $?
 
 # Redefine this function to support different development file layouts
 _tags_file() {
@@ -30,13 +31,12 @@ _nearest_tags_file() {
 }
 
 _vim_search_tags() {
-    local tagsfile pattern limit
-    pattern="$1"
-    tagsfile="$2"
+    local tagsfile pattern limit regex
+    pattern="${1?}"
+    tagsfile="${2?}"
     limit="${3:-100}"
-    ex -N -u NONE -i NONE -c 'let &tags="'$tagsfile'"' -c 'echo "wah\\n"' -c 'let n=0 | let memo={} | for tag in taglist("^".escape("'$pattern'",".*\\[]")) | let name = tag["name"] | if !has_key(memo, name) | let n+=1 | if n>'"$limit"' | break | endif | echo name | let memo[name]=1 | endif | endfor' -cq |
-        tr -s '\r' '\n' |
-        sed -n '/^[a-zA-Z_]/p'
+    regex="$(escape \\ '.?*+{[()|\' "$pattern")"
+    sed -n -e "/^$regex/s/\t.*//p" "$tagsfile"
 }
 
 _complete_vim_bash() {
