@@ -83,6 +83,7 @@ set -o notify
 set -o noclobber
 set +o nounset
 set +o ignoreeof
+shopt -s histappend
 shopt -s checkwinsize
 shopt -s globasciiranges 2>/dev/null
 shopt -s globstar 2>/dev/null
