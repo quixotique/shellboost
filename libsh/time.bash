@@ -1,6 +1,6 @@
 # Shell functions for manipulating time and duration
-# vim:sts=3 sw=3 ts=8 et
-# Copyright 2021 Andrew Bettison
+# vim:sts=4 sw=4 ts=8 et
+# Copyright 2021-2025 Andrew Bettison
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,8 +16,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-__had_extglob=false
-shopt -q extglob && __had_extglob=true
+__restore_extglob="$(shopt -p extglob)"
 shopt -s extglob
 
 # is_duration <text>
@@ -33,8 +32,7 @@ is_duration() {
 # Print the number of minutes in the duration <text>, rounded up to the nearest minute.
 #
 duration_to_minutes() {
-    local __had_extglob=false
-    shopt -q extglob && __had_extglob=true
+    local __restore_extglob="$(shopt -p extglob)"
     shopt -s extglob
     local duration="$1"
     local minutes=0
@@ -54,8 +52,8 @@ duration_to_minutes() {
         esac
     done
     echo $minutes
-    $__had_extglob || shopt -u extglob
+    eval "$__restore_extglob"
 }
 
-$__had_extglob || shopt -u extglob
-unset __had_extglob
+eval "$__restore_extglob"
+unset __restore_extglob

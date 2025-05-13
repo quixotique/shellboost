@@ -1,6 +1,6 @@
 # Shell functions for manipulating text
-# vim:sts=3 sw=3 ts=8 et
-# Copyright 2021 Andrew Bettison
+# vim:sts=4 sw=4 ts=8 et
+# Copyright 2021-2025 Andrew Bettison
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -44,8 +44,7 @@ compare_versions() {
     local lhs="${2?}"
     local rhs="${3?}"
     var=0
-    local __had_extglob=false
-    shopt -q extglob && __had_extglob=true
+    local __restore_extglob="$(shopt -p extglob)"
     shopt -s extglob
     local lhspart lhsrem lhsnum rhspart rhsnum rhsrem
     while [[ -n $lhs && -n $rhs ]]; do
@@ -90,7 +89,7 @@ compare_versions() {
             var=-1
         fi
     fi
-    $__had_extglob || shopt -u extglob
+    eval "$__restore_extglob"
     return $((var == 0 ? 0 : 1))
 }
 
