@@ -1,6 +1,6 @@
 # Shell functions for manipulating text
 # vim:sts=3 sw=3 ts=8 et
-# Copyright 2015 Andrew Bettison
+# Copyright 2025 Andrew Bettison
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,57 +16,39 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+__restore_extglob="$(shopt -p extglob)"
+shopt -s extglob
+
 # Turn all arguments into shell quoted strings which can safely be used as eval
 # arguments.
 quoted() {
-   local quoted esctilde rest char
-   quoted=
-   for arg; do
-      quoted="$quoted "
-      esctilde='\'
-      while [ -n "$arg" ]; do
-         rest="${arg#?}"
-         char="${arg%"$rest"}"
-         case $char in
-         [A-Za-z0-9_/.:+%-]) quoted="$quoted$char";;
-         \~)                 quoted="$quoted$esctilde$char";;
-         *)                  quoted="$quoted\\$char";;
-         esac
-         arg="$rest"
-         esctilde=
-      done
-   done
-   printf '%s\n' "${quoted# }"
+    local var
+    printf -v var " %q" "$@"
+    printf '%s\n' "${var# }"
 }
 
 # Strip characters from start of argument.  If no chars given, default is whitespace.
 # lstrip arg [chars]
 lstrip() {
-   local text chars ntext
-   text="$1"
-   chars="${2:- 	
+    local __restore_extglob="$(shopt -p extglob)"
+    shopt -s extglob
+    local text="$1"
+    local chars="${2:- 	
 }"
-   while true; do
-      ntext="${text#["$chars"]}"
-      [ "$ntext" = "$text" ] && break
-      text="$ntext"
-   done
-   printf '%s\n' "$ntext"
+    echo "${text##*(["$chars"])}"
+    eval "$__restore_extglob"
 }
 
 # Strip characters from end of argument.  If no chars given, default is whitespace.
 # rstrip arg [chars]
 rstrip() {
-   local text chars ntext
-   text="$1"
-   chars="${2:- 	
+    local __restore_extglob="$(shopt -p extglob)"
+    shopt -s extglob
+    local text="$1"
+    local chars="${2:- 	
 }"
-   while true; do
-      ntext="${text%["$chars"]}"
-      [ "$ntext" = "$text" ] && break
-      text="$ntext"
-   done
-   printf '%s\n' "$ntext"
+    echo "${text%%*(["$chars"])}"
+    eval "$__restore_extglob"
 }
 
 # Strip characters from start and end of argument.  If no chars given, default
@@ -75,3 +57,6 @@ rstrip() {
 strip() {
    rstrip "$(lstrip "$1" "$2")" "$2"
 }
+
+eval "$__restore_extglob"
+unset __restore_extglob

@@ -12,7 +12,7 @@ set -x
 assert [ "$IFS" = "$origIFS" ]
 
 assert [ "$(path_explode_eval /a/b/)" = "/ a / b /" ]
-assert [ "$(path_explode_eval "/a b/c$/d*e;")" = "/ 'a b' / 'c$' / 'd*e;'" ]
+assert [ "$(path_explode_eval "/a b/c$/d*e;")" = '/ a\ b / c\$ / d\*e\;' ]
 eval set -- $(path_explode_eval "/a b/c$/d*e;")
 assert [ $# -eq 6 ]
 assert [ "$1" = / ]
