@@ -15,7 +15,7 @@ set guioptions-=l               " no left hand scrollbar
 set guioptions-=L               " no left hand scrollbar on vertically split windows
 
 if has('nvim')
-  set guifont=Inconsolata:h13
+  set guifont=Inconsolata:h12
 else
   set guifont=Inconsolata\ 12
 endif
