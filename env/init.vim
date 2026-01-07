@@ -172,9 +172,9 @@ endif
 " Load all plugins managed by vim-plug
 call plug#begin()
 Plug '~/.vim/package/vim-delta'
-Plug 'junegunn/vim-easy-align'
-Plug 'sophacles/vim-bundle-mako'
-Plug 'rust-lang/rust.vim'
+"Plug 'junegunn/vim-easy-align'
+"Plug 'sophacles/vim-bundle-mako'
+"Plug 'rust-lang/rust.vim'
 call plug#end()
 
 " Rust settings
