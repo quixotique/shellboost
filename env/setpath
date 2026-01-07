@@ -10,6 +10,7 @@ $HOME/.local/bin:\
 $HOME/ABO/bin:\
 $HOME/.cargo/bin:\
 $HOME/bin2:\
+$HOME/zig/bin:\
 /usr/local/sbin:\
 /snap/bin:\
 /sbin:\
