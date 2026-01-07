@@ -42,6 +42,8 @@ done
 link() {
     local src="${1?}"
     local dst="${2?}"
+    local dstdir="${dst%/*}"
+    [[ -d $dstdir ]] || run mkdir -p "$dstdir"
     [[ $src -ef $dst ]] || run ln -snrf "$src" "$dst"
 }
 
