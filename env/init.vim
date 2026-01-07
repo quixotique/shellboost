@@ -20,8 +20,9 @@ else
   set guifont=Inconsolata\ 12
 endif
 
-" A sensible colour scheme with an off-white background:
-if has('nvim-0.5')
+if has('nvim-0.9')
+  " Neovim 0.9 stopped providing the 'vim' colorscheme
+elseif has('nvim-0.5')
   colorscheme vim " Neovim 0.5 stopped using Vim colours as default
 endif
 set background=light
