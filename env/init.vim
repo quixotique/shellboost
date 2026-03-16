@@ -87,7 +87,12 @@ set suffixes+=.o,.a,.out
 set suffixes+=.gz,.bz2,.xz,.tar,.zip,.tgz
 set suffixes+=.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.toc
 
-" Tab management:
+" MUSCLE MEMORY
+
+map Y yy
+
+" TAB MANAGEMENT
+
 nmap <C-S-PageUp> :tabmove -1<CR>
 nmap <C-S-PageDown> :tabmove +1<CR>
 nmap <Leader>] :exec 'tab' 'tjump' expand('<cword>')<CR>
